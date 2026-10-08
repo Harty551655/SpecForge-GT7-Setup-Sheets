@@ -1,10 +1,10 @@
-# SpecForge GT7
+SpecForge GT7
 
 A free, single-page tool that generates a starting tuning sheet for any car in Gran Turismo 7. Pick your car, tell it which parts you have installed, choose a track and layout, add a PP limit if the race has one, describe any problems you have driving it, and get a printable setup sheet.
 
-> **Unofficial fan project.** Not affiliated with, endorsed by, or sponsored by Polyphony Digital or Sony Interactive Entertainment. Gran Turismo and related names and marks belong to their respective owners.
+Unofficial fan project. Not affiliated with, endorsed by, or sponsored by Polyphony Digital or Sony Interactive Entertainment. Gran Turismo and related names and marks belong to their respective owners.
 
-**Live app:** `https://harty551655.github.io/SpecForge-GT7-Setup-Sheets/`
+Live app: Open SpecForge GT7
 
 ---
 
