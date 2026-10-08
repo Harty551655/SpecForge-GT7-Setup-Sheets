@@ -4,7 +4,7 @@ A free, single-page tool that generates a starting tuning sheet for any car in G
 
 Unofficial fan project. Not affiliated with, endorsed by, or sponsored by Polyphony Digital or Sony Interactive Entertainment. Gran Turismo and related names and marks belong to their respective owners.
 
-Live app: Open SpecForge GT7
+Live app: [Open SpecForge GT7](https://harty551655.github.io/SpecForge-GT7-Setup-Sheets/)
 
 ---
 
