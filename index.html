@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GT7 Setup Sheet Generator</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--tx:#14171c;--mu:#667085;--ac:#d9262c;--bd:#dfe3e8;--in:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1115;--card:#181b21;--tx:#eceff4;--mu:#98a2b3;--bd:#2b303a;--in:#10131a}}
+:root[data-theme="dark"]{--bg:#0f1115;--card:#181b21;--tx:#eceff4;--mu:#98a2b3;--bd:#2b303a;--in:#10131a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-size:var(--fs,15px);line-height:1.45;font-family:var(--bf,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif)}
+h1,h2,h3,.sh b{font-family:var(--hf,inherit)}
+header{padding:18px 16px 6px;max-width:var(--mw,1040px);margin:auto}
+h1{margin:0;font-size:22px}h1 span{color:var(--ac)}
+header p{margin:4px 0 0;color:var(--mu);font-size:13px}
+main{max-width:var(--mw,1040px);margin:auto;padding:10px 16px 40px;display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:880px){main{grid-template-columns:380px 1fr;align-items:start}}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r,12px);padding:14px}
+h2{margin:16px 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mu)}
+h2:first-child{margin-top:0}
+label{display:block;font-size:12px;color:var(--mu);margin:8px 0 3px}
+input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);border-radius:var(--r2,8px);background:var(--in);color:var(--tx);font:inherit}
+textarea{min-height:90px;resize:vertical}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chk{display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px;color:var(--tx)}
+.chk input{width:18px;height:18px;accent-color:var(--ac)}
+details{border:1px solid var(--bd);border-radius:var(--r2,8px);padding:6px 10px;margin-top:8px}
+summary{cursor:pointer;font-size:13px;color:var(--mu)}
+button{font:inherit;border:0;border-radius:var(--r2,8px);padding:11px 14px;cursor:pointer;background:var(--ac);color:var(--on,#fff);font-weight:600}
+button.s{background:var(--card);color:var(--tx);border:1px solid var(--bd)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btns button:first-child{flex:1}
+.info{font-size:13px;color:var(--mu);margin-top:6px}
+#out h3{margin:16px 0 6px;font-size:14px;color:var(--ac2,var(--ac))}
+.sh{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;border-bottom:2px solid var(--ac);padding-bottom:8px;margin-bottom:6px}
+.sh b{font-size:18px}.sh small{color:var(--mu)}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}
+td{padding:6px 8px;border-bottom:1px solid var(--bd);vertical-align:top}
+td:first-child{color:var(--mu);white-space:nowrap}td.n{color:var(--mu);font-size:12px}
+.lock b{color:var(--mu);font-weight:400}
+.warn,.ok{border-radius:var(--r2,8px);padding:8px 10px;margin:8px 0;font-size:13px;border:1px solid}
+.warn{background:color-mix(in srgb,var(--wn,#d9262c) 14%,transparent);border-color:var(--wn,#d9262c)}.ok{background:color-mix(in srgb,var(--ok,#1ea05a) 14%,transparent);border-color:var(--ok,#1ea05a)}
+.empty{color:var(--mu);text-align:center;padding:40px 10px}.foot{font-size:12px;color:var(--mu);margin-top:14px}
+/* ===== BRAND COLOURS: edit these (light mode / dark mode below) ===== */
+.brand{display:flex;gap:12px;align-items:center}
+.logo{min-width:56px;height:56px;flex:none;border-radius:10px;border:1px dashed var(--bd);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--mu);overflow:hidden}
+.logo img{height:100%;width:auto;display:block}
+body.nohint td.n{display:none}
+body::before{content:"";position:fixed;inset:0;z-index:5;pointer-events:none;background:var(--wm,none) center/min(75vw,680px) no-repeat;opacity:var(--wmo,.06)}
+#out{position:relative}#out::before{content:"";position:absolute;inset:0;pointer-events:none;background:var(--wm,none) center/72% no-repeat;opacity:calc(var(--wmo,.06)*1.8);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+#out>*{position:relative;z-index:1}
+#out .calc{background:color-mix(in srgb,var(--ac) 8%,transparent);border:1px solid var(--bd);border-radius:var(--r2,8px);padding:10px;margin:8px 0}
+@media print{footer{display:none}body::before{display:none}header,#form,.btns,#cz{display:none}main{display:block;padding:0}.card{border:0}body{background:#fff;color:#000}}
+</style><script>/* EMBEDDED LOGO IMAGE (do not edit; to change the logo set logo / sheetLogo in SECTION 2) */
+const LOGO_DATA='data:image/webp;base64,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';</script>
+</head>
+<body>
+<header style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div class="brand"><div class="logo" id="logo">LOGO</div><div><h1 id="ttl"></h1><p id="tag"></p></div></div></header>
+<main>
+<section class="card" id="form">
+<h2>Car</h2>
+<div class="g2"><div><label>Manufacturer</label><select id="mk"></select></div><div><label>Or category</label><select id="cat"></select></div></div>
+<label>Car</label><select id="car"></select>
+<div class="info" id="carinfo"></div>
+<div id="custom" style="display:none"><div class="g2"><div><label>Drivetrain</label><select id="cd"><option>FR</option><option>MR</option><option>RR</option><option>FF</option><option>4WD</option></select></div><div><label>Power (hp)</label><input type="number" id="chp" placeholder="400"></div></div><label>Weight (kg)</label><input type="number" id="ckg" placeholder="1400"></div>
+<h2>Parts that change your tune</h2><div id="p1"></div>
+<label class="chk"><input type="checkbox" id="aero">Adjustable Downforce</label>
+<label class="chk"><input type="checkbox" id="bbc">Brake Balance Controller</label>
+<label class="chk"><input type="checkbox" id="ballast">Ballast</label>
+<label class="chk"><input type="checkbox" id="restr">Power Restrictor</label>
+<details id="adm" hidden><summary>Admin: add cars for everyone</summary>
+<div class="g2"><div><label>Manufacturer</label><input id="a_mk"></div><div><label>Car name</label><input id="a_nm"></div></div>
+<div class="g2"><div><label>Category</label><select id="a_cat"><option>Gr.N</option><option>Gr.4</option><option>Gr.3</option><option>Gr.2</option><option>Gr.1</option><option>Gr.B</option><option>Gr.X</option></select></div><div><label>Drive</label><select id="a_dr"><option>FR</option><option>MR</option><option>RR</option><option>FF</option><option>4WD</option></select></div></div>
+<div class="g2"><div><label>Power (hp)</label><input type="number" id="a_hp"></div><div><label>Weight (kg)</label><input type="number" id="a_kg"></div></div>
+<label>Base PP</label><input type="number" id="a_pp">
+<div class="btns"><button class="s" id="aadd">Add car</button></div>
+<label>Or bulk import (paste your full table, tab-separated)</label><textarea id="imp"></textarea>
+<div class="btns"><button class="s" id="impb">Import all</button></div><p class="info" id="impm"></p></details>
+<details><summary>Other installed parts (engine, drivetrain, weight)</summary><div id="p2"></div></details>
+<h2>Track</h2>
+<div class="g2"><div><label>Track</label><select id="track"></select></div><div><label>Layout</label><select id="layout"></select></div></div>
+<label>Max PP (blank = no limit)</label><input type="number" id="ppl" placeholder="700">
+<h2>Problems you have driving it</h2>
+<textarea id="prob" placeholder="e.g. understeers in slow corners, rear steps out on corner exit, locks rear wheels under braking, bouncy over kerbs"></textarea>
+<div class="btns"><button id="go">Generate setup sheet</button></div>
+</section>
+<section class="card"><div id="out"><div class="empty">Fill in the form and hit Generate.</div></div>
+<div class="btns" id="actions" style="display:none"><button class="s" id="cp">Copy as text</button><button class="s" onclick="window.print()">Print / Save PDF</button></div></section>
+</main>
+<footer style="text-align:center;padding:0 16px 28px"><button class="s" id="shr">Share this app</button><p class="info">Unofficial fan tool. Not affiliated with Polyphony Digital or Sony.</p></footer>
+<script>
+/* ###################################################################
+   SECTION 1: COLOURS. Change the hex codes below, save the file. That is all.
+   Two palettes: "light" and "dark". Which one shows depends on MODE in section 2
+   (auto = follows the visitor's device). Colour meanings:
+     ac   accent: buttons, headings, highlights     bg   page background
+     card panels and cards                          tx   main text
+     mu   muted / grey text                         bd   borders and lines
+     in   background of dropdowns and input boxes
+     ac2  secondary accent (sheet section headings)   ok  success / good   wn  warning / attention
+     on   text colour on top of accent-coloured buttons
+   Want a different look? Copy one of the spare palettes at the bottom over the dark one.
+   ################################################################### */
+const COLOURS={
+ light:{ac:'#0088CC',ac2:'#00A3B8',bg:'#F4F6F8',card:'#FFFFFF',tx:'#0F0F0F',mu:'#6B6B6B',bd:'#DADDE1',in:'#FFFFFF',ok:'#00A044',wn:'#E09400',on:'#FFFFFF'},
+ dark: {ac:'#00B4FF',ac2:'#00E5FF',bg:'#0F0F0F',card:'#1A1A1A',tx:'#F0F0F0',mu:'#8A8A8A',bd:'#2C2C2C',in:'#0F0F0F',ok:'#00C853',wn:'#FFAB00',on:'#0F0F0F'}
+};
+/* Spare palettes (copy one line over "dark" or "light" above):
+   Midnight Blue  {ac:'#3b82f6',bg:'#0b1220',card:'#111a2e',tx:'#e6edf7',mu:'#8da0bd',bd:'#22314d',in:'#0b1220'}
+   Neon Green     {ac:'#22e06b',bg:'#07100b',card:'#0e1a13',tx:'#e8fff1',mu:'#7fb396',bd:'#1c3326',in:'#07100b'}
+   Carbon Orange  {ac:'#ff7a1a',bg:'#101010',card:'#1a1a1a',tx:'#f2f2f2',mu:'#9a9a9a',bd:'#2e2e2e',in:'#101010'}
+   Purple Night   {ac:'#a855f7',bg:'#0f0b1a',card:'#181228',tx:'#efe9ff',mu:'#a79bc9',bd:'#2c2347',in:'#0f0b1a'}
+   Clean Blue     {ac:'#0a84ff',bg:'#f2f4f8',card:'#ffffff',tx:'#101828',mu:'#667085',bd:'#d9dee7',in:'#ffffff'} */
+
+/* ###################################################################
+   SECTION 2: OTHER SETTINGS (fonts, title, logo, sizes, units).
+   Fonts: System, Serif, Mono, Orbitron, Rajdhani, Exo 2, Inter, Roboto Condensed,
+   Barlow Condensed, Oswald, Chakra Petch, Space Grotesk, Bebas Neue (Google fonts need internet).
+   ################################################################### */
+const DEFAULT_THEME={title1:'SpecForge',title2:'GT7 Setup Sheets',tagline:'Pick your car, parts, track and layout, then describe how it drives.',
+ mode:'dark',   // MODE: auto (follows visitor's device) | light | dark
+ hf:'Chakra Petch',bf:'System',                 // heading / body font (see FONTS list below)
+ fs:15,r:12,mw:1040,                      // text size px, corner radius px, page width px
+ logo:LOGO_DATA,sheetLogo:LOGO_DATA,
+ watermark:true,wmOpacity:0.06,           // WATERMARK: logo faintly behind the app and the sheet. true/false, opacity 0.02 to 0.15
+                    // e.g. 'logo.png' next to this file, or a data:image/... string
+ team:'',note:'',wu:'kg',su:'km/h',hints:true};
+const FONTS={System:[0,'system-ui,-apple-system,"Segoe UI",Roboto,sans-serif'],Serif:[0,'Georgia,serif'],Mono:[0,'ui-monospace,Menlo,Consolas,monospace']};
+['Orbitron','Rajdhani','Exo 2','Inter','Roboto Condensed','Barlow Condensed','Oswald','Chakra Petch','Space Grotesk','Bebas Neue'].forEach(n=>FONTS[n]=[1,'"'+n+'",system-ui,sans-serif']);
+const TH={...DEFAULT_THEME};
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const W=k=>TH.wu=='lb'?Math.round(k*2.20462)+' lb':k+' kg',SPD=k=>TH.su=='mph'?Math.round(k*.621371)+' mph':k+' km/h';
+const root=document.documentElement,st=root.style,gid=i=>document.getElementById(i);
+const lf=n=>{if(gid('f_'+n))return;const l=document.createElement('link');l.id='f_'+n;l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+n.replace(/ /g,'+')+(n=='Bebas Neue'?'':':wght@400;700')+'&display=swap';document.head.appendChild(l)};
+const applyTheme=()=>{gid('ttl').innerHTML=esc(TH.title1)+' <span>'+esc(TH.title2)+'</span>';gid('tag').textContent=TH.tagline;document.title=TH.title1+' '+TH.title2;
+ {const p=COLOURS[TH.mode=='auto'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):TH.mode]||COLOURS.light;Object.keys(p).forEach(k=>st.setProperty('--'+k,p[k]))}
+ TH.mode=='auto'?root.removeAttribute('data-theme'):root.setAttribute('data-theme',TH.mode);
+ [['hf','--hf'],['bf','--bf']].forEach(([k,p])=>{const f=FONTS[TH[k]]||FONTS.System;if(f[0])lf(TH[k]);st.setProperty(p,f[1])});
+ st.setProperty('--fs',TH.fs+'px');st.setProperty('--r',TH.r+'px');st.setProperty('--r2',Math.round(TH.r*.66)+'px');st.setProperty('--mw',TH.mw+'px');st.setProperty('--wm',TH.watermark&&TH.logo?'url("'+TH.logo+'")':'none');st.setProperty('--wmo',TH.wmOpacity);
+ document.body.classList.toggle('nohint',!TH.hints);
+ const lg=gid('logo');if(TH.logo){lg.style.border='0';lg.innerHTML='<img src="'+TH.logo+'" alt="">'}else{lg.style.border='';lg.textContent='LOGO'}
+ };
+applyTheme();try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme)}catch(e){}
+// [name, drivetrain, stock hp, stock kg] approximate values
+const RAW=`Abarth 1500 Biposto Bertone B.A.T 1 '52|N|FR|73|870|258|Abarth
+Abarth 500 '09|N|FF|133|1035|413|Abarth
+Abarth 595 Esseesse '70|N|RR|30|470|197|Abarth
+AFEELA 1 '26|X|4WD|0|0|504|AFEELA
+AFEELA Prototype 2024|X|4WD|0|0|511|AFEELA
+Alfa Romeo 155 2.5 V6 TI '93|4|4WD|413|1010|665|Alfa Romeo
+Alfa Romeo 4C Gr.3|3|MR|528|1220|712|Alfa Romeo
+Alfa Romeo 4C Gr.3 Road Car|N|MR|443|1320|577|Alfa Romeo
+Alfa Romeo 4C Gr.4|4|MR|295|1020|625|Alfa Romeo
+Alfa Romeo 4C Launch Edition '14|N|MR|235|950|533|Alfa Romeo
+Alfa Romeo 8C 2900B Touring Berlinetta '38|N|FR|179|1310|379|Alfa Romeo
+Alfa Romeo 8C Competizione '08|N|FR|442|1585|544|Alfa Romeo
+Alfa Romeo Giulia GTAm '20|N|FR|532|1580|588|Alfa Romeo
+Alfa Romeo Giulia Sprint GT Veloce '67|N|FR|104|1040|336|Alfa Romeo
+Alfa Romeo GIULIA TZ2 carrozzata da ZAGATO '65|X|FR|168|620|513|Alfa Romeo
+Alfa Romeo MiTo 1.4 T Sport '09|N|FF|152|1145|425|Alfa Romeo
+Alpine A110 1600S '72|N|RR|138|715|422|Alpine
+Alpine A110 Première Édition '17|N|MR|248|1103|532|Alpine
+Alpine A220 Race Car '68|X|MR|319|690|582|Alpine
+Alpine Vision Gran Turismo|X|MR|443|900|671|Alpine
+Alpine Vision Gran Turismo 2017|1|RR|594|930|853|Alpine
+Alpine Vision Gran Turismo Race Mode|X|MR|443|900|738|Alpine
+Mercedes-AMG C 63 S '15|N|FR|503|1725|548|AMG
+Mercedes-AMG GT Black Series '20|N|FR|719|1540|671|AMG
+Mercedes-AMG GT R '17|N|FR|576|1660|587|AMG
+Mercedes-AMG GT S '15|N|FR|502|1570|573|AMG
+Mercedes-AMG GT Safety Car|X|FR|502|1570|570|AMG
+Mercedes-AMG GT3 '16|3|FR|614|1325|724|AMG
+Mercedes-AMG GT3 '20|3|FR|614|1285|731|AMG
+Mercedes-Benz 300 SEL 6.8 AMG '71|X|FR|422|1635|496|AMG
+Mercedes-Benz A 45 AMG 4MATIC '13|N|4WD|355|1555|505|AMG
+Mercedes-Benz AMG Vision Gran Turismo|X|FR|576|1385|650|AMG
+Mercedes-Benz AMG Vision Gran Turismo Racing Series|X|FR|590|1300|707|AMG
+Mercedes-Benz SLS AMG '10|N|FR|570|1620|578|AMG
+Mercedes-Benz SLS AMG Gr.4|4|FR|419|1415|635|AMG
+Mercedes-Benz SLS AMG GT3 '11|3|FR|614|1350|702|AMG
+Amuse NISMO 380RS Super Leggera|N|FR|380|1370|555|Amuse
+Amuse S2000 GT1 Turbo|N|FR|616|1120|679|Amuse
+Aston Martin DB11 '16|N|FR|599|1770|566|Aston Martin
+Aston Martin DB3S '53|X|FR|224|856|464|Aston Martin
+Aston Martin DB5 '64|N|FR|281|1468|418|Aston Martin
+Aston Martin DBR9 GT1 '10|3|FR|599|1100|711|Aston Martin
+Aston Martin DP-100 Vision Gran Turismo|X|4WD|799|1375|700|Aston Martin
+Aston Martin One-77 '11|N|FR|748|1630|614|Aston Martin
+Aston Martin V12 Vantage GT3 '12|3|FR|591|1250|706|Aston Martin
+Aston Martin V8 Vantage S '15|N|FR|429|1610|542|Aston Martin
+Aston Martin Valkyrie '21|N|MR|1139|1270|854|Aston Martin
+Aston Martin Vantage '18|N|FR|502|1530|574|Aston Martin
+Aston Martin Vantage Gr.4|4|FR|399|1350|631|Aston Martin
+Aston Martin Vulcan '16|N|FR|820|1360|757|Aston Martin
+Audi e-tron Vision Gran Turismo|X|4WD|803|1450|851|Audi
+Audi R18 '16|1|4WD|506|875|875|Audi
+Audi R18 TDI '11|1|MR|532|900|872|Audi
+Audi R8 4.2 FSI R tronic '07|N|4WD|414|1560|546|Audi
+Audi R8 Coupé V10 plus '16|N|4WD|601|1454|608|Audi
+Audi R8 LMS '15|3|MR|585|1225|724|Audi
+Audi R8 LMS Evo '19|3|MR|576|1235|724|Audi
+Audi RS 5 Turbo DTM '19|2|FR|603|986|854|Audi
+Audi Sport quattro S1 Pikes Peak '87|B|4WD|588|1000|652|Audi
+Audi TT Coupé 3.2 quattro '03|N|4WD|239|1520|454|Audi
+Audi TT Cup '16|4|FF|335|1125|642|Audi
+Audi TTS Coupé '09|N|4WD|268|1415|504|Audi
+Audi TTS Coupé '14|N|4WD|305|1385|518|Audi
+Audi Vision Gran Turismo|1|4WD|735|1250|872|Audi
+Autobianchi A112 Abarth '85|N|FF|71|710|328|Autobianchi
+BAC Mono '16|N|MR|304|580|640|BAC
+BMW 3.0 CSL '71|N|FR|177|1165|408|BMW
+BMW 3.0 CSL '73|N|FR|202|1250|413|BMW
+BMW i3 '15|X|MR|166|1260|404|BMW
+BMW M Hybrid V8 '25|1|MR|641|1030|845|BMW
+BMW M2 Competition '18|N|FR|405|1575|536|BMW
+BMW M3 '89|N|FR|212|1200|461|BMW
+BMW M3 '97|N|FR|316|1460|481|BMW
+BMW M3 Coupé '03|N|FR|339|1560|502|BMW
+BMW M3 Coupé '07|N|FR|415|1655|523|BMW
+BMW M3 GT '11|3|FR|500|1245|693|BMW
+BMW M3 Sport Evolution '89|N|FR|234|1200|470|BMW
+BMW M4 Coupé '14|N|FR|425|1497|552|BMW
+BMW M4 Gr.4|4|FR|394|1365|626|BMW
+BMW M4 Safety Car|X|FR|425|1497|552|BMW
+BMW M6 GT3 Endurance Model '16|3|FR|584|1300|732|BMW
+BMW M6 GT3 Sprint Model '16|3|FR|584|1300|732|BMW
+BMW McLaren F1 GTR Race Car '97|2|MR|602|950|776|BMW
+BMW Vision Gran Turismo|X|FR|541|1180|714|BMW
+BMW Z4 3.0i '03|N|FR|227|1290|477|BMW
+BMW Z4 GT3 '11|3|FR|522|1190|706|BMW
+BMW Z8 '01|N|FR|395|1610|522|BMW
+Bugatti Chiron '16|N|4WD|1479|1995|664|Bugatti
+Bugatti Veyron 16.4 '13|N|4WD|986|1888|626|Bugatti
+Bugatti Veyron Gr.4|4|4WD|433|1650|624|Bugatti
+Bugatti Vision Gran Turismo|X|4WD|1626|1400|901|Bugatti
+Bugatti Vision Gran Turismo (Gr.1)|1|4WD|641|980|914|Bugatti
+BVLGARI Aluminium Vision Gran Turismo|X|MR|394|1000|624|BVLGARI
+Caterham Seven Superlight R500 '08|N|FR|263|516|569|Caterham
+Chaparral 2J '70|X|MR|683|821|828|Chaparral
+Chaparral 2X Vision Gran Turismo|X|---|905|450|1103|Chaparral
+Chevrolet Camaro 1969 Race-Mod|N|FR|657|1320|644|Chevrolet
+Chevrolet Camaro SS '16|N|FR|453|1672|535|Chevrolet
+Chevrolet Camaro Z28 '69|N|FR|289|1415|423|Chevrolet
+Chevrolet Camaro ZL1 1LE Package '18|N|FR|649|1732|623|Chevrolet
+Chevrolet Chevelle SS 454 Sport Coupé '70|N|FR|449|1762|437|Chevrolet
+Chevrolet Corvette (C1) '58|N|FR|243|1327|412|Chevrolet
+Chevrolet Corvette C7 Gr.3|3|FR|571|1300|707|Chevrolet
+Chevrolet Corvette C7 Gr.3 Road Car|N|FR|493|1480|579|Chevrolet
+Chevrolet Corvette C7 Gr.4|4|FR|414|1350|640|Chevrolet
+Chevrolet Corvette C7 Stingray '14|N|FR|453|1500|550|Chevrolet
+Chevrolet Corvette C7 ZR1 '19|N|FR|754|1615|634|Chevrolet
+Chevrolet Corvette C8 Stingray '20|N|MR|494|1530|570|Chevrolet
+Chevrolet Corvette CX Concept '25|X|4WD|2145|1400|821|Chevrolet
+Chevrolet Corvette CX.R Vision Gran Turismo Concept|X|4WD|2038|1250|939|Chevrolet
+Chevrolet Corvette Sting Ray Sport Coupe (C2) '63|N|FR|359|1380|501|Chevrolet
+Chevrolet Corvette Stingray Convertible (C3) '69|N|FR|298|1552|431|Chevrolet
+Chevrolet Corvette Stingray L46 350 (C3) '69|N|FR|350|1490|492|Chevrolet
+Chevrolet Corvette Stingray Racer Concept '59|X|FR|314|1150|506|Chevrolet
+Chevrolet Corvette Z06 (C5) '01|N|FR|384|1409|537|Chevrolet
+Chevrolet Corvette ZR-1 (C4) '89|N|FR|375|1572|508|Chevrolet
+Chevrolet Corvette ZR1 (C6) '09|N|FR|639|1508|585|Chevrolet
+Chris Holstrom Concepts 1967 Chevy Nova|N|FR|732|1366|592|Chris Holstrom Concepts
+Citroën BX 19 TRS '87|N|FF|103|995|351|Citroën
+Citroën DS 21 Pallas '70|N|FF|103|1300|323|Citroën
+GT by Citroën Gr.4|4|MR|394|1300|642|Citroën
+GT by Citroën Race Car (Gr.3)|3|MR|599|1200|721|Citroën
+GT by Citroën Road Car|N|MR|500|1450|599|Citroën
+Daihatsu Copen Active Top '02|N|FF|62|830|312|Daihatsu
+DAIHATSU COPEN RJ Vision Gran Turismo|X|FF|146|600|508|Daihatsu
+De Tomaso Mangusta '69|N|MR|300|1185|461|De Tomaso
+De Tomaso Pantera '71|N|MR|325|1420|448|De Tomaso
+DMC DeLorean S2 '04|N|RR|197|1288|455|DMC
+Dodge Challenger R/T '70|N|FR|425|1724|471|Dodge
+Dodge Challenger SRT Demon '18|N|FR|840|1941|598|Dodge
+Dodge Charger R/T 426 Hemi '68|N|FR|425|1805|445|Dodge
+Dodge Charger SRT Hellcat '15|N|FR|707|1980|559|Dodge
+Dodge Charger SRT Hellcat Safety Car|X|FR|707|1980|557|Dodge
+Dodge SRT Tomahawk GTS-R Vision Gran Turismo|X|4WD|1449|663|1211|Dodge
+Dodge SRT Tomahawk S Vision Gran Turismo|X|4WD|1006|921|962|Dodge
+Dodge SRT Tomahawk Vision Gran Turismo (Gr.1)|1|MR|693|950|890|Dodge
+Dodge SRT Tomahawk X Vision Gran Turismo|X|4WD|2586|749|1403|Dodge
+Dodge Super Bee '70|N|FR|335|1533|414|Dodge
+Dodge Viper Gr.4|4|FR|428|1400|642|Dodge
+Dodge Viper GTS '02|N|FR|448|1569|536|Dodge
+Dodge Viper GTS '13|N|FR|640|1556|580|Dodge
+Dodge Viper SRT GT3-R '15|3|FR|678|1290|731|Dodge
+Dodge Viper SRT10 Coupe '06|N|FR|508|1565|556|Dodge
+DS 3 Racing '11|N|FF|203|1165|457|DS AUTOMOBILES
+Eckert's Rod & Custom Mach Forty|N|MR|787|1588|609|Eckert's Rod & Custom
+Enzo Ferrari '02|N|MR|658|1255|635|Ferrari
+Ferrari 250 GT Berlinetta passo corto '61|N|FR|275|960|468|Ferrari
+Ferrari 250 GTO '62|X|FR|295|880|530|Ferrari
+Ferrari 296 GT3 '23|3|MR|599|1280|734|Ferrari
+Ferrari 296 GTB '22|N|MR|818|1470|661|Ferrari
+Ferrari 308 GTB '75|N|MR|251|1090|463|Ferrari
+Ferrari 330 P4 '67|X|MR|448|792|688|Ferrari
+Ferrari 365 GTB4 '71|N|FR|347|1200|532|Ferrari
+Ferrari 430 Scuderia '07|N|MR|502|1350|588|Ferrari
+Ferrari 458 Italia '09|N|MR|563|1485|597|Ferrari
+Ferrari 458 Italia Gr.4|4|MR|374|1350|619|Ferrari
+Ferrari 458 Italia GT3 '13|3|MR|542|1215|728|Ferrari
+Ferrari 499P '23|1|4WD|670|1030|851|Ferrari
+Ferrari 500 Mondial Pinin Farina Coupe '54|N|FR|168|720|475|Ferrari
+Ferrari 512 BB '76|N|MR|354|1400|515|Ferrari
+Ferrari 812 Superfast '17|N|FR|788|1525|665|Ferrari
+Ferrari Dino 246 GT '71|N|MR|191|1080|436|Ferrari
+Ferrari F12berlinetta '12|N|FR|730|1525|619|Ferrari
+Ferrari F40 '92|N|MR|471|1100|587|Ferrari
+Ferrari F430 '06|N|MR|495|1450|571|Ferrari
+Ferrari F50 '95|N|MR|511|1230|600|Ferrari
+Ferrari F8 Tributo '19|N|MR|710|1330|673|Ferrari
+Ferrari FXX K '14|N|MR|1034|1165|755|Ferrari
+Ferrari GTO '84|N|MR|393|1160|547|Ferrari
+Ferrari LaFerrari '13|N|MR|949|1255|697|Ferrari
+Ferrari Testarossa '91|N|MR|384|1506|513|Ferrari
+Ferrari Vision Gran Turismo|X|4WD|1363|1250|892|Ferrari
+FIAT 500 1.2 8V Lounge SS '08|N|FF|65|1010|294|FIAT
+FIAT 500 F '68|N|RR|16|520|112|FIAT
+FIAT Panda 30 CL '85|N|FF|29|650|174|FIAT
+1932 Ford Roadster|N|FR|179|1115|404|Ford
+Ford Escort RS Cosworth '92|N|4WD|223|1275|471|Ford
+Ford F-150 SVT Raptor '11|N|4WD|411|2724|397|Ford
+Ford Focus Gr.B Rally Car|B|4WD|538|1260|662|Ford
+Ford Focus RS '18|N|4WD|350|1557|502|Ford
+Ford Focus ST '15|N|FF|250|1462|483|Ford
+Ford GT '06|N|MR|550|1451|583|Ford
+Ford GT '17|N|MR|646|1385|629|Ford
+Ford GT LM Race Car Spec II|3|MR|606|1130|712|Ford
+Ford GT LM Spec II Test Car|3|MR|590|1165|708|Ford
+Ford GT Race Car '18|3|MR|527|1200|705|Ford
+Ford GT40 Mark I '66|N|MR|354|1080|542|Ford
+Ford Mark IV Race Car '67|X|MR|503|1000|658|Ford
+Ford Mustang Boss 429 '69|N|FR|374|1614|484|Ford
+Ford Mustang Gr.3|3|FR|568|1300|706|Ford
+Ford Mustang Gr.3 Road Car|N|FR|502|1500|580|Ford
+Ford Mustang Gr.4|4|FR|395|1400|626|Ford
+Ford Mustang Gr.B Rally Car|B|4WD|549|1380|645|Ford
+Ford Mustang GT Premium Fastback '15|N|FR|434|1681|524|Ford
+Ford Mustang Mach 1 '71|N|FR|302|1615|417|Ford
+Ford Shelby GT350R '16|N|FR|525|1658|561|Ford
+Ford Sierra RS 500 Cosworth '87|N|FR|223|1207|465|Ford
+Garage RCR Civic|N|FF|389|1014|603|Garage RCR
+Genesis G70 3.3T AWD Prestige Package '22|N|4WD|366|1815|481|Genesis
+Genesis G70 GR4|4|4WD|414|1400|640|Genesis
+Genesis X GR3|3|FR|547|1280|715|Genesis
+Genesis X Gran Berlinetta Vision Gran Turismo Concept|X|4WD|869|1060|782|Genesis
+Genesis X Gran Racer Vision Gran Turismo Concept|1|4WD|869|1089|856|Genesis
+Gran Turismo F1500T-A|X|MR|986|540|949|Gran Turismo
+Gran Turismo F3500-A|X|MR|773|529|978|Gran Turismo
+Gran Turismo F3500-B|X|MR|719|505|974|Gran Turismo
+Gran Turismo Racing Kart 125 Shifter|X|MR|49|105|580|Gran Turismo
+Gran Turismo Red Bull X2014 Junior|X|MR|246|550|716|Gran Turismo
+Gran Turismo Red Bull X2014 Standard|X|MR|798|650|1072|Gran Turismo
+Gran Turismo Red Bull X2019 Competition|X|MR|804|650|983|Gran Turismo
+GReddy Fugu Z|N|FR|294|1100|543|GReddy
+Greening Auto Company Maverick|N|FR|1199|1633|656|Greening Auto Company
+Honda Beat '91|N|MR|63|760|326|Honda
+Honda Civic Si Extra (EF) '87|N|FF|128|910|391|Honda
+Honda Civic SiR･II (EG) '93|N|FF|167|1070|399|Honda
+Honda Civic Type R (EK) '97|N|FF|176|1050|443|Honda
+Honda Civic Type R (EK) '98|N|FF|181|1050|444|Honda
+Honda Civic Type R (EK) Touring Car|N|FF|247|845|552|Honda
+Honda Civic Type R (FK2) '15|N|FF|305|1380|509|Honda
+Honda Civic Type R (FL5) '22|N|FF|325|1430|529|Honda
+Honda Civic Type R Limited Edition (FK8) '20|N|FF|315|1370|513|Honda
+Honda CR-V e:HEV EX・Black Edition '21|N|4WD|181|1700|379|Honda
+Honda Fit Hybrid '14|N|FF|138|1080|345|Honda
+Honda Integra Type R (DC2) '95|N|FF|197|1060|470|Honda
+Honda Integra Type R (DC2) '98|N|FF|198|1080|468|Honda
+Honda N-ONE RS '22|N|FF|63|840|311|Honda
+Honda NSX '17|N|4WD|570|1780|555|Honda
+Honda NSX CONCEPT-GT '16|2|MR|603|1049|861|Honda
+Honda NSX Gr.3|3|MR|568|1300|702|Honda
+Honda NSX Gr.4|4|MR|394|1360|635|Honda
+Honda NSX Gr.B Rally Car|B|4WD|557|1300|657|Honda
+Honda NSX GT500 '00|3|MR|481|1150|696|Honda
+Honda NSX GT500 '08|2|MR|518|1150|796|Honda
+Honda NSX Type R '02|N|MR|290|1270|519|Honda
+Honda NSX Type R '92|N|MR|284|1230|514|Honda
+Honda Project 2&4 powered by RC213V|X|MR|211|405|575|Honda
+Honda RA272 '65|X|MR|228|498|633|Honda
+Honda S2000 '99|N|FR|242|1240|480|Honda
+Honda S660 '15|N|MR|63|830|367|Honda
+Honda S800 '66|N|FR|68|720|276|Honda
+Honda Sports Vision Gran Turismo|X|MR|403|899|663|Honda
+Hyundai ELANTRA N '23|N|FF|276|1450|501|Hyundai
+Hyundai ELANTRA N TC '24|4|FF|350|1265|643|Hyundai
+Hyundai Genesis Coupe 3.8 Track '13|N|FR|343|1557|503|Hyundai
+Hyundai Genesis Gr.3|3|FR|575|1250|717|Hyundai
+Hyundai Genesis Gr.4|4|FR|384|1350|620|Hyundai
+Hyundai Genesis Gr.B Rally Car|B|4WD|499|1250|642|Hyundai
+Hyundai IONIQ 5 N '24|N|4WD|641|2210|544|Hyundai
+Hyundai IONIQ 6 N '25|N|4WD|641|2205|513|Hyundai
+HYUNDAI N 2025 Vision Gran Turismo|X|4WD|870|972|921|Hyundai
+HYUNDAI N 2025 Vision Gran Turismo (Gr.1)|1|4WD|640|972|895|Hyundai
+INFINITI CONCEPT Vision Gran Turismo|X|FR|535|1680|639|Infiniti
+Italdesign EXENEO Vision Gran Turismo Off-road Mode|X|4WD|1219|1000|755|Italdesign
+Italdesign EXENEO Vision Gran Turismo Street Mode|X|4WD|1219|1000|758|Italdesign
+Jaguar D-type '54|X|FR|249|850|460|Jaguar
+Jaguar E-type Coupé '61|N|FR|264|1300|425|Jaguar
+Jaguar F-type Gr.3|3|FR|552|1250|717|Jaguar
+Jaguar F-type Gr.4|4|FR|399|1350|630|Jaguar
+Jaguar F-type R Coupé '14|N|FR|542|1650|558|Jaguar
+Jaguar Vision Gran Turismo Coupé|X|4WD|1004|1400|742|Jaguar
+Jaguar Vision Gran Turismo Roadster|X|4WD|1004|1400|731|Jaguar
+Jaguar Vision Gran Turismo SV|X|4WD|1876|1400|995|Jaguar
+Jaguar XJ13 '66|X|MR|510|998|660|Jaguar
+Jaguar XJ220 '92|N|MR|515|1372|601|Jaguar
+Jaguar XJR-9 '88|1|MR|749|894|837|Jaguar
+Jeep Willys MB '45|N|4WD|60|1113|171|Jeep
+KTM X-BOW R '12|N|MR|298|790|586|KTM
+Lambo V12 Vision Gran Turismo|X|4WD|774|819|768|Lamborghini
+Lamborghini Aventador LP 700-4 '11|N|4WD|690|1575|603|Lamborghini
+Lamborghini Aventador LP 750-4 Superveloce '15|N|4WD|739|1525|644|Lamborghini
+Lamborghini Countach 25th Anniversary '88|N|MR|449|1490|522|Lamborghini
+Lamborghini Countach LP400 '74|N|MR|373|1065|545|Lamborghini
+Lamborghini Diablo GT '00|N|MR|571|1490|558|Lamborghini
+Lamborghini Gallardo LP 560-4 '08|N|4WD|552|1410|590|Lamborghini
+Lamborghini Huracán Gr.4|4|4WD|404|1365|648|Lamborghini
+Lamborghini Huracán GT3 '15|3|MR|576|1230|720|Lamborghini
+Lamborghini Huracán LP 610-4 '15|N|4WD|601|1422|613|Lamborghini
+Lamborghini Miura P400 Bertone Prototype '67|N|MR|349|980|559|Lamborghini
+Lamborghini Murciélago LP 640 '09|N|4WD|631|1665|584|Lamborghini
+Lamborghini Urus '18|N|4WD|641|2197|540|Lamborghini
+Lamborghini Veneno '14|N|4WD|739|1450|680|Lamborghini
+Lancia Delta HF Integrale Evoluzione '91|N|4WD|209|1350|391|Lancia
+Lancia Delta HF Integrale Rally Car '92|B|4WD|330|1100|616|Lancia
+Lancia Stratos '73|N|MR|185|980|441|Lancia
+Lexus LC500 '17|N|FR|469|1940|524|Lexus
+LEXUS LF-LC GT "Vision Gran Turismo"|X|FR|612|1075|843|Lexus
+Lexus LFA '10|N|FR|552|1480|588|Lexus
+Lexus RC F '14|N|FR|469|1790|531|Lexus
+Lexus RC F Gr.4|4|FR|419|1400|636|Lexus
+Lexus RC F GT3 '17|3|FR|535|1300|715|Lexus
+Lexus RC F GT3 prototype '16|3|FR|527|1300|709|Lexus
+Lexus RC F GT500 '16|2|FR|614|1020|861|Lexus
+Lexus SC430 GT500 '08|2|FR|516|1100|796|Lexus
+Maserati A6GCS/53 Spyder '54|X|FR|166|740|491|Maserati
+Maserati GranTurismo S '08|N|FR|439|1780|516|Maserati
+Maserati MC20 '20|N|MR|621|1500|607|Maserati
+Maserati Merak SS '80|N|MR|216|1420|398|Maserati
+Mazda 787B '91|1|MR|690|830|819|Mazda
+Mazda Atenza Gr.3|3|FR|567|1280|709|Mazda
+Mazda Atenza Gr.3 Road Car|N|FR|483|1450|578|Mazda
+Mazda Atenza Gr.4|4|4WD|393|1380|614|Mazda
+Mazda Atenza Sedan XD L Package '15|N|4WD|172|1600|364|Mazda
+Mazda CX-30 X Smart Edition '21|N|FF|187|1490|391|Mazda
+Mazda Demio XD Touring '15|N|FF|103|1080|342|Mazda
+Mazda Eunos Roadster (NA Special Package) '89|N|FR|117|940|380|Mazda
+Mazda ɛ̃fini RX-7 Type R (FD) '91|N|FR|251|1260|484|Mazda
+Mazda LM55 Vision Gran Turismo|X|4WD|0|0|917|Mazda
+Mazda LM55 Vision Gran Turismo (Gr.1)|1|4WD|641|880|885|Mazda
+Mazda Roadster NR-A (ND) '22|N|FR|130|1010|430|Mazda
+Mazda Roadster S (ND) '15|N|FR|128|990|431|Mazda
+Mazda Roadster Touring Car|N|FR|205|795|543|Mazda
+Mazda RX-7 GT-X (FC) '90|N|FR|203|1250|458|Mazda
+Mazda RX-7 Spirit R Type A (FD) '02|N|FR|292|1270|515|Mazda
+Mazda RX-8 Spirit R '12|N|FR|230|1350|481|Mazda
+Mazda RX-VISION '15|N|FR|517|1290|612|Mazda
+MAZDA RX-VISION GT3 CONCEPT|3|FR|562|1250|723|Mazda
+Mazda RX500 '70|N|MR|247|850|460|Mazda
+MAZDA SPIRIT RACING ROADSTER 12R '25|N|FR|197|1050|485|Mazda
+MAZDA3 Gr.4|4|FF|380|1200|644|Mazda
+MAZDA3 X Burgundy Selection '19|N|4WD|177|1480|413|Mazda
+McLaren 650S Coupe '14|N|MR|641|1330|625|McLaren
+McLaren 650S Gr.4|4|MR|399|1300|616|McLaren
+McLaren 650S GT3 '15|3|MR|542|1240|706|McLaren
+McLaren F1 '94|N|MR|626|1140|611|McLaren
+McLaren F1 GTR - BMW '95|3|MR|600|1050|724|McLaren
+McLaren MP4-12C '10|N|MR|600|1350|614|McLaren
+McLaren MP4/4 '88|X|MR|675|540|909|McLaren
+McLaren P1 GTR '16|N|MR|986|1345|773|McLaren
+McLaren Ultimate Vision Gran Turismo|X|MR|1134|900|909|McLaren
+McLaren Ultimate Vision Gran Turismo (Gr.1)|1|MR|813|900|881|McLaren
+Mercedes-Benz 190 E 2.5-16 Evolution II '91|N|FR|231|1340|457|Mercedes-Benz
+Mercedes-Benz 300 SL (W194) '52|X|FR|178|1080|420|Mercedes-Benz
+Mercedes-Benz 300 SL Coupé '54|N|FR|212|1295|392|Mercedes-Benz
+Mercedes-Benz CLK-LM '98|2|MR|599|940|799|Mercedes-Benz
+Mercedes-Benz S Barker Tourer '29|N|FR|177|1270|305|Mercedes-Benz
+Mercedes-Benz SLR McLaren '09|N|FR|616|1768|579|Mercedes-Benz
+Mercedes-Benz Unimog Type 411 '62|N|4WD|29|1940|13|Mercedes-Benz
+Mercedes-Benz W 196 R '55|X|FR|289|835|599|Mercedes-Benz
+Sauber Mercedes C9 '89|1|MR|710|893|832|Mercedes-Benz
+Mine's BNR34 GT-R N1 base|N|4WD|621|1350|632|Mine's
+MINI Clubman Vision Gran Turismo|X|4WD|388|1050|652|MINI
+MINI Cooper S '05|N|FF|167|1180|438|MINI
+Mini-Cooper 'S' '65|N|FF|64|605|284|MINI
+Mitsubishi Concept XR-PHEV EVOLUTION Vision Gran Turismo|X|4WD|502|1350|693|Mitsubishi
+Mitsubishi FTO GP Version R '97|N|FF|197|1150|454|Mitsubishi
+Mitsubishi GTO Twin Turbo '91|N|4WD|285|1700|453|Mitsubishi
+Mitsubishi Lancer Evolution Final Edition '15|N|4WD|309|1530|496|Mitsubishi
+Mitsubishi Lancer Evolution Final Edition Gr.3|3|FR|610|1290|722|Mitsubishi
+Mitsubishi Lancer Evolution Final Edition Gr.4|4|4WD|389|1330|630|Mitsubishi
+Mitsubishi Lancer Evolution Final Edition Gr.B Rally Car|B|4WD|521|1290|645|Mitsubishi
+Mitsubishi Lancer Evolution Final Edition Gr.B Road Car|N|4WD|473|1425|582|Mitsubishi
+Mitsubishi Lancer Evolution III GSR '95|N|4WD|264|1260|466|Mitsubishi
+Mitsubishi Lancer Evolution IV GSR '96|N|4WD|273|1350|468|Mitsubishi
+Mitsubishi Lancer Evolution IX MR GSR '06|N|4WD|277|1420|497|Mitsubishi
+Mitsubishi Lancer Evolution V GSR '98|N|4WD|306|1360|488|Mitsubishi
+Mitsubishi Lancer Evolution VI GSR T.M. EDITION Special Color Package '99|N|4WD|311|1360|503|Mitsubishi
+Mitsubishi Lancer Evolution VIII MR GSR '04|N|4WD|276|1400|498|Mitsubishi
+NISMO 400R '95|N|4WD|394|1550|529|Nismo
+NISMO R34 GT-R Z-tune '05|N|4WD|493|1600|575|Nismo
+Nissan 180SX Type X '96|N|FR|203|1220|463|Nissan
+NISSAN CONCEPT 2020 Vision Gran Turismo|X|4WD|0|0|684|Nissan
+Nissan Fairlady 240ZG (HS30) '71|N|FR|147|1010|397|Nissan
+Nissan Fairlady Z (Z34) '08|N|FR|331|1530|513|Nissan
+Nissan Fairlady Z 300ZX TwinTurbo 2seater (Z32) '89|N|FR|276|1510|465|Nissan
+Nissan Fairlady Z 432 '69|N|FR|157|1040|405|Nissan
+Nissan Fairlady Z Version S (Z33) '07|N|FR|310|1480|508|Nissan
+Nissan GT-R Gr.4|4|4WD|428|1450|634|Nissan
+Nissan GT-R Gr.B Rally Car|B|4WD|542|1350|654|Nissan
+Nissan GT-R GT500 '08|2|FR|527|1100|802|Nissan
+Nissan GT-R GT500 '99|3|FR|498|1200|696|Nissan
+Nissan GT-R LM NISMO '15|1|4WD|604|880|896|Nissan
+Nissan GT-R NISMO '17|N|4WD|591|1740|614|Nissan
+Nissan GT-R NISMO (R32) '90|N|4WD|306|1400|494|Nissan
+Nissan GT-R NISMO GT3 '13|3|FR|591|1300|699|Nissan
+Nissan GT-R NISMO GT3 '18|3|FR|576|1285|721|Nissan
+Nissan GT-R NISMO GT500 '16|2|FR|612|1020|861|Nissan
+Nissan GT-R Premium edition '17|N|4WD|564|1770|567|Nissan
+Nissan GT-R Premium edition T-spec '24|N|4WD|562|1760|570|Nissan
+Nissan GT-R Safety Car|X|4WD|564|1740|567|Nissan
+Nissan Qashqai Tekna 190 2wd e-Power '22|N|FF|187|1624|416|Nissan
+Nissan R92CP '92|1|MR|788|900|856|Nissan
+Nissan Sileighty '98|N|FR|203|1170|470|Nissan
+Nissan Silvia K's Aero (S14) '96|N|FR|216|1250|474|Nissan
+Nissan Silvia K's Dia Selection (S13) '90|N|FR|171|1140|407|Nissan
+Nissan Silvia K's Type S (S14) '94|N|FR|216|1220|475|Nissan
+Nissan Silvia Q's (S13) '88|N|FR|132|1090|381|Nissan
+Nissan Silvia spec-R Aero (S15) '02|N|FR|246|1240|490|Nissan
+Nissan Silvia spec-R Aero (S15) Touring Car|4|FR|355|1000|637|Nissan
+Nissan Skyline 2000GT-R (KPGC110) '73|N|FR|157|1145|378|Nissan
+Nissan Skyline GT-R V･spec (R33) '97|N|4WD|319|1540|501|Nissan
+Nissan Skyline GT-R V･spec II (R32) '94|N|4WD|306|1500|499|Nissan
+Nissan Skyline GT-R V･spec II Nür (R34) '02|N|4WD|336|1560|505|Nissan
+Nissan Skyline GTS-R (R31) '87|N|FR|207|1340|441|Nissan
+Nissan Skyline Hard Top 2000GT-R (KPGC10) '70|N|FR|157|1100|386|Nissan
+Nissan Skyline Super Silhouette Group 5 '84|3|FR|561|1005|688|Nissan
+Nissan Z Performance '23|N|FR|399|1543|523|Nissan
+Opel Corsa GSE Vision Gran Turismo|X|4WD|788|1170|874|Opel
+Pagani Huayra '13|N|MR|730|1350|665|Pagani
+Pagani Zonda R '09|X|MR|737|1070|751|Pagani
+Peugeot 205 GTI '88|N|FF|128|875|396|Peugeot
+Peugeot 205 Turbo 16 Evolution 2 '86|B|4WD|448|910|671|Peugeot
+Peugeot 208 GTi by Peugeot Sport '14|N|FF|204|1200|451|Peugeot
+Peugeot 908 HDi FAP '10|1|MR|700|930|885|Peugeot
+Peugeot 9X8 '25|1|4WD|670|1030|840|Peugeot
+Peugeot L500R HYbrid Vision Gran Turismo, 2017|X|4WD|509|1000|642|Peugeot
+Peugeot L750R HYbrid Vision Gran Turismo, 2017|1|4WD|693|825|883|Peugeot
+Peugeot RCZ Gr.3|3|MR|520|1200|692|Peugeot
+Peugeot RCZ Gr.3 Road Car|N|MR|468|1400|572|Peugeot
+Peugeot RCZ Gr.4|4|FF|345|1225|631|Peugeot
+Peugeot RCZ Gr.B Rally Car|B|4WD|516|1200|648|Peugeot
+Peugeot RCZ GT Line '15|N|FF|152|1350|426|Peugeot
+Peugeot SUV 2008 Allure '21|N|FF|129|1192|361|Peugeot
+PEUGEOT Vision Gran Turismo|X|4WD|873|875|749|Peugeot
+PEUGEOT Vision Gran Turismo (Gr.3)|3|MR|542|1250|693|Peugeot
+Plymouth Superbird '70|N|FR|425|1755|415|Plymouth
+Plymouth XNR Ghia Roadster '60|N|FR|250|1500|376|Plymouth
+Polestar 5 Performance '26|X|4WD|871|2503|555|Polestar
+Pontiac Firebird Trans Am '78|N|FR|219|1640|385|Pontiac
+Pontiac GTO 'The Judge' '69|N|FR|364|1610|427|Pontiac
+Porsche 356 A/1500 GS Carrera '56|N|RR|97|840|364|Porsche
+Porsche 356 A/1500 GS GT Carrera Speedster '56|N|RR|107|840|378|Porsche
+Porsche 911 Carrera RS (901) '73|N|RR|206|1075|485|Porsche
+Porsche 911 Carrera RS (964) '92|N|RR|255|1230|501|Porsche
+Porsche 911 Carrera RS (993) '95|N|RR|295|1270|513|Porsche
+Porsche 911 Carrera RS Clubsport (993) '95|N|RR|295|1235|513|Porsche
+Porsche 911 GT1 Strassenversion '97|N|MR|533|1200|617|Porsche
+Porsche 911 GT3 (996) '01|N|RR|354|1350|538|Porsche
+Porsche 911 GT3 (997) '09|N|RR|428|1395|563|Porsche
+Porsche 911 GT3 R (992) '22|3|RR|557|1250|732|Porsche
+Porsche 911 GT3 RS (991) '16|N|RR|491|1420|634|Porsche
+Porsche 911 GT3 RS (992) '22|N|RR|517|1450|655|Porsche
+Porsche 911 RSR (991) '17|3|MR|509|1243|721|Porsche
+Porsche 911 Turbo (930) '81|N|RR|295|1300|497|Porsche
+Porsche 911 Turbo S (992) '20|N|4WD|641|1640|604|Porsche
+Porsche 911 Turbo S Leichtbau (964) '93|N|RR|375|1290|537|Porsche
+Porsche 911 Turbo S Safety Car (992)|X|4WD|641|1640|604|Porsche
+Porsche 917 LIVING LEGEND|X|MR|976|1220|771|Porsche
+Porsche 917K '70|X|MR|598|800|692|Porsche
+Porsche 918 Spyder '13|N|4WD|874|1674|666|Porsche
+Porsche 919 Hybrid '16|1|4WD|499|875|880|Porsche
+Porsche 959 '87|N|4WD|443|1450|570|Porsche
+Porsche 962 C '88|1|MR|690|850|815|Porsche
+Porsche 963 '24|1|MR|670|1030|857|Porsche
+Porsche Carrera GT '04|N|MR|603|1380|612|Porsche
+Porsche Carrera GTS (904) '64|X|MR|179|650|525|Porsche
+Porsche Cayman GT4 '16|N|MR|379|1340|575|Porsche
+Porsche Cayman GT4 Clubsport '16|4|MR|379|1300|644|Porsche
+Porsche Mission X '23|X|RR|1341|0|773|Porsche
+Porsche Spyder type 550/1500RS '55|X|MR|108|590|445|Porsche
+Porsche Taycan Turbo S '19|X|4WD|751|2295|582|Porsche
+Porsche Vision Gran Turismo|X|4WD|1098|1390|758|Porsche
+Porsche Vision Gran Turismo Spyder|X|4WD|1098|1390|755|Porsche
+Radical SR3 SL '13|N|MR|239|775|547|Radical
+RE Amemiya FD3S RX-7|N|FR|366|1240|563|RE Amemiya
+Renault Avantime 3.0 V6 24V '02|N|FF|204|1741|363|Renault
+Renault Captur S Edition TCe 140 '21|N|FF|138|1234|391|Renault
+Renault Espace F1 '95|X|MR|799|1300|754|Renault
+Renault Kangoo 1.4 '01|N|FF|73|1080|300|Renault
+Renault R4 GTL '85|N|FF|33|720|190|Renault
+Renault R5 Turbo '80|N|MR|159|970|400|Renault
+Renault R8 Gordini '66|X|RR|101|850|356|Renault
+Renault Sport Clio R.S. 220 EDC Trophy '15|N|FF|216|1179|466|Renault
+Renault Sport Clio R.S. 220 EDC Trophy '16|N|FF|216|1204|463|Renault
+Renault Sport Clio V6 24V '00|N|MR|229|1335|463|Renault
+Renault Sport Mégane Gr.4|4|FF|350|1100|644|Renault
+Renault Sport Mégane R.S. Trophy '11|N|FF|261|1387|486|Renault
+Renault Sport Mégane R.S. Trophy Safety Car|X|FF|261|1387|483|Renault
+Renault Sport Mégane Trophy '11|4|MR|359|955|650|Renault
+Renault Sport R.S.01 '16|X|MR|542|1144|724|Renault
+Renault Sport R.S.01 GT3 '16|3|MR|534|1220|710|Renault
+Renault Twingo '93|N|FF|54|790|295|Renault
+Roadster Shop Rampage|N|FR|748|1406|660|Roadster Shop
+RUF CTR3 '07|N|MR|690|1400|654|RUF
+RUF RGT 4.2 '16|N|RR|517|1400|641|RUF
+Shelby Cobra 427 '66|N|FR|484|1068|572|Shelby
+Shelby Cobra Daytona Coupe '64|X|FR|384|1043|551|Shelby
+Shelby G.T.350 '65|N|FR|304|1270|452|Shelby
+Škoda Vision Gran Turismo|X|4WD|1071|1300|852|Škoda
+Subaru BRZ Drift Car '17|X|FR|1037|1433|617|Subaru
+Subaru BRZ GT300 '21|3|FR|478|1150|714|Subaru
+Subaru BRZ S '15|N|FR|197|1230|449|Subaru
+Subaru BRZ S '21|N|FR|231|1270|483|Subaru
+Subaru BRZ STI Sport '18|N|FR|203|1250|467|Subaru
+Subaru Impreza 22B-STi Version '98|N|4WD|289|1270|501|Subaru
+Subaru Impreza Coupe WRX Type R STi Version VI '99|N|4WD|276|1260|473|Subaru
+Subaru Impreza Rally Car '98|B|4WD|299|1230|580|Subaru
+Subaru Impreza Sedan WRX STi '04|N|4WD|286|1460|485|Subaru
+SUBARU VIZIV GT Vision Gran Turismo|X|4WD|630|1380|700|Subaru
+Subaru WRX Gr.3|3|FR|591|1280|718|Subaru
+Subaru WRX Gr.4|4|4WD|377|1320|636|Subaru
+Subaru WRX Gr.B Rally Car|B|4WD|521|1280|642|Subaru
+Subaru WRX Gr.B Road Car|N|4WD|473|1425|577|Subaru
+Subaru WRX STI Isle of Man Time Attack Car '16|X|4WD|578|1140|704|Subaru
+Subaru WRX STI Type S '14|N|4WD|302|1490|489|Subaru
+Dallara SF19 Super Formula / Honda '19|X|MR|639|660|960|Super Formula
+Dallara SF19 Super Formula / Toyota '19|X|MR|639|660|960|Super Formula
+Dallara SF23 Super Formula / Honda '23|X|MR|625|670|962|Super Formula
+Dallara SF23 Super Formula / Toyota '23|X|MR|625|670|962|Super Formula
+Suzuki Cappuccino (EA11R) '91|N|FR|62|700|320|Suzuki
+Suzuki Carry KC '12|N|FR|47|710|234|Suzuki
+Suzuki Jimny Sierra JC '18|N|4WD|100|1070|318|Suzuki
+Suzuki Jimny XC '18|N|4WD|63|1030|261|Suzuki
+Suzuki Swift Sport '07|N|FF|123|1060|410|Suzuki
+Suzuki Swift Sport '17|N|FF|137|970|439|Suzuki
+Suzuki Swift Sport KATANA Edition Gr.4|4|FF|345|900|665|Suzuki
+Suzuki V6 Escudo Pikes Peak Special '98|X|4WD|981|800|780|Suzuki
+SUZUKI Vision Gran Turismo|X|4WD|426|970|651|Suzuki
+SUZUKI Vision Gran Turismo (Gr.3 Version)|3|FR|577|1220|711|Suzuki
+Tesla Model 3 Performance '23|X|4WD|531|1836|534|Tesla
+Tesla Model S Signature Performance '12|X|RR|410|2018|484|Tesla
+Toyota 2000GT '67|N|FR|153|1120|393|Toyota
+TOYOTA 86 Gr.4|4|FR|358|1200|639|Toyota
+TOYOTA 86 Gr.B Rally Car|B|4WD|516|1180|665|Toyota
+Toyota 86 GRMN '16|N|FR|214|1220|474|Toyota
+TOYOTA 86 GT '15|N|FR|197|1230|451|Toyota
+TOYOTA 86 GT"Limited" '16|N|FR|203|1240|453|Toyota
+Toyota Alphard Executive Lounge '18|N|4WD|296|2210|363|Toyota
+Toyota Ambulance Himedic '21|X|4WD|157|2860|210|Toyota
+Toyota Aqua S '11|N|FF|109|1080|360|Toyota
+Toyota C-HR S '18|N|FF|136|1440|348|Toyota
+Toyota Celica GT-FOUR (ST205) '94|N|4WD|250|1380|455|Toyota
+Toyota Celica GT-FOUR Rally Car (ST205) '95|B|4WD|298|1200|588|Toyota
+Toyota Chaser Tourer V '97|N|FR|276|1470|475|Toyota
+Toyota Corolla Levin 3door 1600GT APEX (AE86) '83|N|FR|127|940|381|Toyota
+Toyota Crown Athlete G '13|N|FR|309|1650|472|Toyota
+Toyota Crown Athlete G Safety Car|X|FR|309|1650|466|Toyota
+Toyota FT-1|X|FR|0|0|568|Toyota
+Toyota FT-1 Vision Gran Turismo|X|FR|0|0|758|Toyota
+Toyota FT-1 Vision Gran Turismo (Gr.3)|3|FR|544|1280|710|Toyota
+Toyota GR Corolla MORIZO Edition '22|N|4WD|299|1445|498|Toyota
+Toyota GR Supra Race Car '19|4|FR|394|1380|637|Toyota
+Toyota GR Supra Racing Concept '18|3|FR|591|1243|731|Toyota
+Toyota GR Supra RZ '19|N|FR|335|1520|525|Toyota
+Toyota GR Supra RZ '20|N|FR|382|1530|533|Toyota
+Toyota GR Yaris 1st Edition RZ "High performance" '20|N|4WD|268|1290|502|Toyota
+TOYOTA GR010 HYBRID '21|1|4WD|670|1040|852|Toyota
+Toyota GR86 RZ '21|N|FR|231|1270|483|Toyota
+Toyota GT-One (TS020) '99|2|MR|764|900|845|Toyota
+Toyota Hiace Van DX '16|N|FR|134|1680|244|Toyota
+Toyota Land Cruiser FJ40V '74|N|4WD|128|1610|293|Toyota
+Toyota Mark II Tourer V '97|N|FR|276|1470|475|Toyota
+Toyota MR2 GT-S '97|N|MR|241|1270|478|Toyota
+Toyota Prius G '09|N|FF|146|1350|370|Toyota
+Toyota RAV4 Adventure '20|N|4WD|168|1630|373|Toyota
+TOYOTA S-FR '15|N|FR|133|1050|430|Toyota
+TOYOTA S-FR Racing Concept '16|N|FR|349|1150|557|Toyota
+Toyota Sports 800 '65|N|FR|43|580|256|Toyota
+Toyota Sprinter Trueno 3door 1600GT APEX (AE86) '83|N|FR|127|940|381|Toyota
+Toyota Supra 3.0GT Turbo A '88|N|FR|266|1530|455|Toyota
+Toyota Supra GT500 '97|3|FR|492|1150|696|Toyota
+Toyota Supra RZ '97|N|FR|325|1510|507|Toyota
+Toyota Trueno 3door 1600GT APEX (AE86 Shuichi Shigeno Version)|N|FR|207|825|510|Toyota
+Toyota TS030 Hybrid '12|1|MR|529|900|887|Toyota
+Toyota TS050 - Hybrid '16|1|4WD|493|875|879|Toyota
+Toyota Tundra TRD Pro '19|N|4WD|379|2555|384|Toyota
+TVR Tuscan Speed 6 '00|N|FR|360|1100|556|TVR
+Volkswagen 1200 '66|N|RR|33|780|170|Volkswagen
+Volkswagen Beetle Gr.3|3|FR|591|1200|737|Volkswagen
+Volkswagen Golf I GTI '83|N|FF|110|890|372|Volkswagen
+Volkswagen Golf VII GTI '14|N|FF|216|1390|454|Volkswagen
+Volkswagen GTI Roadster Vision Gran Turismo|X|4WD|551|1200|694|Volkswagen
+Volkswagen GTI Supersport Vision Gran Turismo|X|4WD|551|1200|695|Volkswagen
+Volkswagen GTI Vision Gran Turismo (Gr.3)|3|MR|551|1260|690|Volkswagen
+Volkswagen ID.R '19|X|4WD|670|1030|849|Volkswagen
+Volkswagen Polo GTI '14|N|FF|189|1272|439|Volkswagen
+Volkswagen Sambabus Typ 2 (T1) '62|N|RR|33|1095|116|Volkswagen
+Volkswagen Scirocco Gr.4|4|FF|358|1050|657|Volkswagen
+Volkswagen Scirocco R '10|N|FF|252|1410|488|Volkswagen
+Volvo 240 SE Estate '93|N|FR|109|1324|303|Volvo
+Volvo V40 T5 R-Design '13|N|FF|210|1540|432|Volvo
+Wicked Fabrication GT 51|N|FR|372|1338|522|Wicked Fabrication
+Xiaomi SU7 Ultra '25|X|4WD|1526|2360|681|Xiaomi
+Yangwang U9 '24|X|4WD|1286|2380|675|Yangwang
+IsoRivolta Zagato Vision Gran Turismo|X|FR|559|1150|658|Zagato
+`;
+const n=t=>+String(t||'0').replace(/,/g,'');
+const parse=t=>t.split('\n').map(l=>l.split('\t')).filter(r=>r.length>=7&&/PP/.test(r[3])).map(r=>[r[0].trim(),r[4].trim(),n((r[5].match(/([\d,]+)\s*BHP/)||[])[1]),n((r[6].match(/([\d,]+)\s*kg/)||[])[1]),r[1].trim(),r[2].trim(),Math.round(parseFloat(r[3].replace(/[^\d.]/g,'')))]);
+let C=[],mkr='';RAW.split('\n').forEach(l=>{if(l[0]=='#')mkr=l.slice(1);else if(l.trim()){const p=l.split('|');C.push([p[0],p[2],+p[3],+p[4],(p[6]||mkr).trim(),'Gr.'+p[1],+p[5]])}});
+const BASE=C.slice();
+// track: [layout, type, approx top speed km/h]
+const F=(a,b)=>[a,b[0],b[1]],ft=['fast',320],mx=['mixed',270],tc=['tech',220];
+const T={"Autodromo Nazionale Monza":[["Full Course",'fast',340],["Junior / short",'mixed',260]],"Circuit de la Sarthe (Le Mans)":[["Full Course",'fast',340],["No Chicanes",'fast',360]],"Daytona":[["Road Course",'fast',300],["Tri-Oval",'fast',320]],"Fuji Speedway":[["Full Course",'fast',310],["Short Course",'mixed',250]],"Tokyo Expressway":[["East Outer",'fast',320],["East Inner",'fast',320],["South Outer",'fast',320],["South Inner",'fast',320],["Central Outer",'fast',320],["Central Inner",'fast',320]],"Special Stage Route X":[["Full Course",'fast',360]],"High Speed Ring":[["Full",'fast',300],["Reverse",'fast',300]],"Red Bull Ring":[["Full Course",'mixed',280],["Short Course",'tech',220]],"Spa-Francorchamps":[["Full Course",'mixed',300]],"Suzuka":[["Full Course",'mixed',280],["East Course",'tech',220]],"Nurburgring":[["Nordschleife",'mixed',290],["24h Layout",'mixed',290],["GP",'mixed',270]],"Mount Panorama":[["Full Course",'mixed',270]],"Interlagos":[["Full Course",'mixed',270]],"Watkins Glen":[["Long Course",'mixed',280],["Short Course",'mixed',260]],"Autopolis":[["International",'mixed',270],["Shortcut",'tech',230]],"Sardegna":[["Road Track A",'mixed',250],["Road Track B",'tech',230],["Road Track C",'tech',210]],"Willow Springs":[["Big Willow",'mixed',270],["Streets",'tech',200]],"Brands Hatch":[["GP",'tech',230],["Indy",'tech',200]],"Laguna Seca":[["Full Course",'tech',240]],"Tsukuba":[["Full Course",'tech',200]],"Dragon Trail":[["Seaside",'tech',220],["Gardens",'tech',200]],"Trial Mountain":[["Full",'tech',230],["Reverse",'tech',230]],"Deep Forest":[["Full",'tech',220],["Reverse",'tech',220]],"Grand Valley":[["Full",'mixed',260],["Reverse",'mixed',260]],"Blue Moon Bay Speedway":[["Full Course",'fast',300],["Infield A",'tech',200],["Infield B",'tech',210]],"Goodwood":[["Motor Circuit",'tech',220]],"Alsace":[["Village",'tech',230],["Test Course",'mixed',250]],"Other":[["Fast layout",'fast',300],["Mixed layout",'mixed',260],["Tight / technical",'tech',210]]};
+const P1=[["tyre","Tyres",["Comfort Hard","Comfort Medium","Comfort Soft","Sports Hard","Sports Medium","Sports Soft","Racing Hard","Racing Medium","Racing Soft","Intermediate","Heavy Wet"],6],["susp","Suspension",["Stock","Sports","Semi-racing","Fully customizable"],3],["lsd","Differential (LSD)",["None / stock","1-way","1.5-way","2-way","Fully customizable"],4],["trans","Transmission",["Stock","Sports","Semi-racing","Racing","Fully customizable"],0],["ecu","Computer (ECU)",["None","Sports","Fully customizable (output adjust)"],0]];
+const P2=[["Air filter",["Sports","Racing"]],["Intake",["Sports","Racing"]],["Exhaust",["Sports","Semi-racing","Racing"]],["Catalytic converter",["Sports"]],["Engine tuning",["Stage 1","Stage 2","Stage 3"]],["Port polish",["Installed"]],["Engine balancing",["Installed"]],["Displacement increase",["Installed"]],["Turbo / supercharger",["Low-rpm","Medium-rpm","High-rpm","Ultra-high-rpm","Supercharger"]],["Intercooler",["Sports","Racing"]],["Flywheel",["Sports","Semi-racing","Racing"]],["Clutch",["Single","Twin","Triple"]],["Driveshaft",["Carbon"]],["Brakes",["Sports"]],["Weight reduction",["Stage 1","Stage 2","Stage 3"]]];
+const $=i=>document.getElementById(i),v=i=>$(i).value,c=i=>$(i).checked,opt=(a,s)=>a.map((x,i)=>`<option value="${i}"${i===s?' selected':''}>${x}</option>`).join('');
+$('p1').innerHTML=P1.map(p=>`<label>${p[1]}</label><select id="${p[0]}">${opt(p[2],p[3])}</select>${p[0]=='lsd'?'<label>Customizable LSD fitted on</label><select id="lsdp"><option value="auto">Auto (by drivetrain)</option><option value="front">Front only</option><option value="rear">Rear only</option><option value="both">Both front and rear</option></select>':''}`).join('');
+$('p2').innerHTML=P2.map((p,i)=>`<label>${p[0]}</label><select id="o${i}"><option value="">None</option>${p[1].map(x=>`<option>${x}</option>`).join('')}</select>`).join('');
+$('track').innerHTML=Object.keys(T).map(k=>`<option>${k}</option>`).join('');
+const setL=()=>{$('layout').innerHTML=T[v('track')].map((l,i)=>`<option value="${i}">${l[0]}</option>`).join('')};setL();$('track').onchange=setL;
+const carInfo=()=>{const x=v('car')==='x';$('custom').style.display=x?'block':'none';$('carinfo').textContent=x?'':(k=>`${k[4]} · ${k[5]} · ${k[1]} · ${k[2]||'?'} hp · ${k[3]?W(k[3]):'?'} · base PP ${k[6]}`)(C[+v('car')])};
+const list=()=>{const m=v('mk'),k=v('cat');$('car').innerHTML=C.map((x,i)=>[x,i]).filter(([x])=>(!m||x[4]==m)&&(!k||x[5]==k)).map(([x,i])=>`<option value="${i}">${k?x[4]+' - ':''}${x[0]}</option>`).join('')+'<option value="x">Custom / not listed</option>';carInfo()};
+const build=()=>{$('mk').innerHTML='<option value="">All manufacturers</option>'+[...new Set(C.map(x=>x[4]))].sort().map(m=>`<option>${m}</option>`).join('');$('cat').innerHTML='<option value="">All categories</option>'+['Gr.1','Gr.2','Gr.3','Gr.4','Gr.B','Gr.N','Gr.X'].filter(k=>C.some(x=>x[5]==k)).map(k=>`<option>${k}</option>`).join('');list()};
+$('mk').onchange=()=>{if(v('mk'))$('cat').value='';list()};$('cat').onchange=()=>{if(v('cat'))$('mk').value='';list()};$('car').onchange=carInfo;
+let DBC=[];const key=x=>x[4]+'|'+x[0];
+const merge=()=>{const sel=v('car')==='x'?null:C[+v('car')],sk=sel&&key(sel),a=v('mk'),b=v('cat'),m=new Map();BASE.concat(DBC).forEach(x=>m.set(key(x).toLowerCase(),x));C=[...m.values()];build();$('mk').value=a;$('cat').value=b;list();if(sk){const ix=C.findIndex(x=>key(x)==sk);if(ix>=0)$('car').value=ix}carInfo()};
+$('aadd').onclick=async()=>{const m=$('impm');try{const db=await claude.use('db'),x={maker:$('a_mk').value.trim(),name:$('a_nm').value.trim(),cat:$('a_cat').value,drive:$('a_dr').value,hp:+$('a_hp').value||0,kg:+$('a_kg').value||0,pp:+$('a_pp').value||0};if(!x.maker||!x.name){m.textContent='Enter a manufacturer and a car name.';return}await db.collection('cars').doc((x.maker+'-'+x.name).toLowerCase().replace(/[^a-z0-9]+/g,'-')).set(x);m.textContent='Added '+x.name+' for everyone.'}catch(e){m.textContent='Could not add: '+((e&&(e.message||e.code))||'not allowed')}};
+$('impb').onclick=async()=>{const m=$('impm'),r=parse($('imp').value);if(!r.length){m.textContent='No rows found. Paste with tabs between columns.';return}try{const db=await claude.use('db'),t=Date.now();for(let i=0;i<r.length;i+=100){await db.collection('cars').doc('pack_'+t+'_'+(i/100)).set({json:JSON.stringify(r.slice(i,i+100))})}m.textContent=r.length+' cars published for everyone.'}catch(e){m.textContent='Could not import: '+((e&&(e.message||e.code))||'not allowed')}};
+(async()=>{try{if(!(window.claude&&claude.use))return;const [db,user]=await Promise.all([claude.use('db'),claude.use('user')]);if(user&&user.canEdit())$('adm').hidden=false;if(!db)return;
+db.collection('cars').onSnapshot(sn=>{DBC=[];sn.docs.forEach(d=>{const x=d.data()||{};try{if(x.json)JSON.parse(x.json).forEach(r=>DBC.push(r));else if(x.name)DBC.push([x.name,x.drive,+x.hp||0,+x.kg||0,x.maker,x.cat,+x.pp||0])}catch(e){}});merge()},()=>{})}catch(e){}})();
+build();
+const txtOf=i=>$(i).options[$(i).selectedIndex].text,cl=(n,a,b)=>Math.min(b,Math.max(a,n)),f1=n=>(Math.round(n*10)/10).toFixed(1);
+// problem keywords -> adjustments
+const R=[[/understeer|push|won'?t turn|plough|turn.?in.*(slow|lazy)/i,'Understeer: stiffer rear ARB, softer front, more front camber and downforce, less brake-sensitivity',a=>{a.af--;a.ar++;a.tf+=.05;a.cf+=.3;a.lB-=3;a.df+=10}],
+[/oversteer|loose|snap|rear (steps|slides|steps out)|tail/i,'Oversteer: stiffer front ARB, softer rear, more rear toe-in and rear downforce',a=>{a.ar--;a.af++;a.tr+=.1;a.dr+=10;a.lA-=3}],
+[/exit|on throttle|power oversteer|corner exit/i,'Corner-exit/throttle oversteer: lower LSD acceleration sensitivity',a=>{a.lA-=6;a.ar--}],
+[/wheelspin|traction|spin(s)? (up|on exit)|inside wheel/i,'Wheelspin: more LSD acceleration sensitivity and initial torque',a=>{a.lA+=6;a.lI+=3}],
+[/rear.*(lock|unstable|brak)|brak.*(rear|unstable|snap)/i,'Rear instability under braking: more front brake bias, less LSD braking sensitivity',a=>{a.bb++;a.lB-=4;a.tr+=.05}],
+[/front.*lock|lock.*front|flat spot/i,'Front lock-ups: move brake balance rearward',a=>{a.bb--}],
+[/bounc|bump|kerb|curb|skittish|unsettled|porpois/i,'Bumps and kerbs: raise ride height, soften dampers and springs',a=>{a.cmp-=3;a.rh+=5;a.hz-=.2}],
+[/body roll|lean|floaty|wallow|roll/i,'Body roll: stiffer ARBs and springs, firmer dampers',a=>{a.af++;a.ar++;a.hz+=.2;a.cmp+=2}],
+[/twitch|nervous|darty|over.?sharp/i,'Twitchy turn-in: less front toe-out',a=>{a.tf-=.05}],
+[/top speed|straight|drag|slow on/i,'Slow on straights: trim downforce and lengthen the final gear / top speed setting',a=>{a.df-=10;a.dr-=10}]];
+const AERO_NOTE='<p class="foot" style="margin:8px 0"><b>Working out the % on your phone calculator.</b> Look at the lowest (MIN) and highest (MAX) number at the ends of the downforce slider. Target number = MIN + (MAX \u2212 MIN) \u00d7 (% + 50) \u00f7 100. Example: MIN 100, MAX 300, target +20%: type 200 \u00d7 70 \u00f7 100 + 100 = 240. For -30% use 200 \u00d7 20 \u00f7 100 + 100 = 140. Do the front and rear separately with their own MIN and MAX. To go the other way: % = (number \u2212 MIN) \u00f7 (MAX \u2212 MIN) \u00d7 100 \u2212 50.</p>';
+const wireCalc=(pF,pR)=>{const f=(a,b,p,o)=>{const lo=parseFloat($(a).value),hi=parseFloat($(b).value);$(o).textContent=isFinite(lo)&&isFinite(hi)&&hi>lo?String(Math.round((lo+(hi-lo)*(p+50)/100)*10)/10):'enter MIN and MAX'},go=()=>{f('fMin','fMax',pF,'fOut');f('rMin','rMax',pR,'rOut')};['fMin','fMax','rMin','rMax'].forEach(i=>$(i).oninput=go)};
+function gen(){
+const x=v('car')==='x',cr=x?['Custom car',v('cd'),+v('chp')||400,+v('ckg')||1400]:C[+v('car')];
+const name=cr[0],d=['FR','MR','RR','FF','4WD'].includes(cr[1])?cr[1]:'4WD',hp0=cr[2],wr=+(document.querySelector('#o14')?$('o14').selectedIndex:0),kg=Math.round((cr[3]||1400)*(1-.04*wr));
+const L0=T[v('track')][+v('layout')],ty=L0[1],spd=L0[2],tyre=txtOf('tyre'),race=tyre.startsWith('Racing')||false,aero=c('aero');
+const susp=+v('susp')===3,lsd=+v('lsd')===4,tr=+v('trans')===4,ecu=+v('ecu')===2;
+const a={af:0,ar:0,tf:0,tr:0,cf:0,lA:0,lB:0,lI:0,bb:0,hz:0,cmp:0,rh:0,df:0,dr:0},notes=[],prob=v('prob');
+R.forEach(r=>{if(r[0].test(prob)){notes.push(r[1]);r[2](a)}});
+const rows=(t,r)=>({t,r});const S=[];
+// suspension
+const rhB={fast:[0,5],mixed:[5,10],tech:[10,15]}[ty],rh=n=>n+a.rh>0?'Lowest +'+(n+a.rh)+' mm':'Lowest';
+const arbB={FR:[6,4],MR:[5,6],RR:[6,4],FF:[4,6],'4WD':[5,5]}[d],ar=arbB.map((n,i)=>cl(n+(aero?1:0)+(i?a.ar:a.af),1,10));
+const base=kg<1000?2.6:kg<1400?2.3:kg<1800?2.1:1.9,hz=base+(race?.3:0)+(aero?.2:0)+a.hz;
+const cF=35+(race?3:0)+(aero?2:0)+a.cmp,cR=cF-3+(d=='FF'?2:0);
+const cb={FR:[2,1],MR:[2,1.2],RR:[2.5,1.5],FF:[2,1],'4WD':[2,1.5]}[d],cm=(race?.7:0)+(ty=='tech'?.3:ty=='fast'?-.3:0);
+const tF=cl({fast:0,mixed:.05,tech:.1}[ty]+a.tf,0,1),tR=cl({fast:.3,mixed:.2,tech:.15}[ty]+(d=='FF'?.1:0)+a.tr,0,1);
+const nd='Needs Fully Customizable Suspension';
+S.push(['Suspension',susp?[['Ride height F / R',rh(rhB[0])+' / '+rh(rhB[1]),'Lower = more grip; raise if it bottoms out'],['Anti-roll bar F / R',ar.join(' / '),'Scale 1-10'],['Natural frequency F / R',f1(hz)+' / '+f1(hz+(d=='FF'?.2:.1))+' Hz','Stiffer with aero and racing tyres'],['Damping compression F / R',cF+' / '+cR+' %',''],['Damping extension F / R',(cF+10)+' / '+(cR+10)+' %','Keep extension above compression'],['Camber F / R',f1(cb[0]+cm+a.cf)+' / '+f1(cb[1]+cm*.6)+' deg',''],['Toe F / R',(tF?tF.toFixed(2)+' out':'0.00')+' / '+tR.toFixed(2)+' in','Front out = sharper turn-in']]:['Ride height','Anti-roll bars','Natural frequency','Dampers','Camber','Toe'].map(k=>[k,'Locked',nd])]);
+const dp={fast:[-30,-20],mixed:[0,10],tech:[30,40]}[ty],pc=(b,d)=>{const x=cl(b+d,-50,50);return(x>0?'+':'')+x+'%'},pF=cl(dp[0]+a.df,-50,50),pR=cl(dp[1]+a.dr,-50,50),
+AC=aero?`<div class="calc"><b>Downforce calculator</b><p class="info" style="margin:4px 0">Enter the lowest (MIN) and highest (MAX) number at the ends of each downforce slider.</p><div class="g2"><div><label>Front MIN</label><input type="number" id="fMin"></div><div><label>Front MAX</label><input type="number" id="fMax"></div><div><label>Rear MIN</label><input type="number" id="rMin"></div><div><label>Rear MAX</label><input type="number" id="rMax"></div></div><p style="margin:8px 0 0">Set the front to <b id="fOut">enter MIN and MAX</b> (${pc(dp[0],a.df)}) and the rear to <b id="rOut">enter MIN and MAX</b> (${pc(dp[1],a.dr)}).</p></div>`:'';
+S.push(['Aerodynamics',aero?[['Downforce F / R',pc(dp[0],a.df)+' / '+pc(dp[1],a.dr),'0% = middle of the slider, -50% = minimum, +50% = maximum. Keep rear at or above front']]:[['Downforce','Locked','Needs Adjustable Downforce']],aero?AC+AERO_NOTE:'']);
+const lp=v('lsdp')||'auto',ax=lp=='both'?['Front','Rear']:lp=='front'?['Front']:lp=='rear'?['Rear']:d=='FF'?['Front']:d=='4WD'?['Front','Rear']:['Rear'];
+const LB={Rear:{FR:[12,40,22],MR:[10,35,25],RR:[10,30,20],FF:[10,30,20],'4WD':[12,40,25]},Front:{FF:[8,25,10],FR:[8,20,10],MR:[8,20,10],RR:[8,20,10],'4WD':[8,20,10]}};
+const lr=[];
+if(lsd){ax.forEach(A=>{const bs=LB[A][d];lr.push([A+' initial torque',cl(bs[0]+a.lI,5,60),'Higher = more lock on and off throttle'],[A+' acceleration sensitivity',cl(bs[1]+(race?5:0)+a.lA,5,60),'Higher = more lock under power'],[A+' braking sensitivity',cl(bs[2]+a.lB,5,60),'Higher = more entry stability'])});
+if((d=='FF'&&ax.includes('Rear'))||((d=='FR'||d=='MR'||d=='RR')&&ax.includes('Front')))lr.push(['Check in game','Your car may not offer this','Most cars only have a differential on the driven axle(s). Only use the settings your car shows.'])}else lr.push(['LSD','Locked','Needs Fully Customizable LSD']);
+if(lsd&&d=='4WD')lr.push(['Torque split F : R',ty=='tech'?'35 : 65':'30 : 70','Rear-biased for rotation']);
+S.push(['Differential',lr]);
+S.push(['Transmission',tr?[['Top speed (auto)','about '+SPD(spd+5),'Or the slider max if the car cannot reach it; hit the limiter ~90% down the longest straight'],['Individual ratios','Fine-tune','1st for the slowest corner exit; closer ratios for tight tracks']]:[['Transmission','Locked','Needs Fully Customizable Transmission']]]);
+const bp=cl({FF:2,FR:1,MR:0,RR:-1,'4WD':1}[d]+(ty=='tech'?-1:0)+a.bb,-5,5),bpos={FR:'+20 (rear)',FF:'+30 (rear)',RR:'-30 (front)',MR:'0 (centre)','4WD':'+10 (rear)'}[d];
+S.push(['Brakes, weight and power',[c('bbc')?['Brake balance',(bp>0?'+':'')+bp,'+ = front bias']:['Brake balance','Locked','Needs Brake Balance Controller'],c('ballast')?['Ballast position',bpos,'Use to fix balance or meet PP']:['Ballast','Not installed',''],ecu?['ECU output','100% (reduce only for PP)','']:['ECU output','Locked','Needs Fully Customizable ECU'],c('restr')?['Power restrictor','100% (reduce only for PP)','']:['Power restrictor','Not installed','']]]);
+const ins=[P1[0]&&'Tyres: '+tyre,'Suspension: '+txtOf('susp'),'LSD: '+txtOf('lsd'),'Transmission: '+txtOf('trans'),'ECU: '+txtOf('ecu')].concat(P2.map((p,i)=>$('o'+i).value?p[0]+': '+$('o'+i).value:null).filter(Boolean),[aero&&'Adjustable Downforce',c('bbc')&&'Brake Balance Controller',c('ballast')&&'Ballast',c('restr')&&'Power Restrictor'].filter(Boolean));
+const ppl=+v('ppl');
+let top=`<div class="sh"><div>${TH.sheetLogo?`<img src="${TH.sheetLogo}" style="height:64px;display:block;margin-bottom:8px" alt="">`:`<div class="logo" style="margin-bottom:6px">LOGO</div>`}<b>${name}</b><br><small>${cr[5]||'Custom'} · ${d} · ${hp0||'?'} hp (stock) · ${W(kg)}${cr[6]?' · base PP '+cr[6]:''}</small></div><div style="text-align:right"><b>${v('track')}</b><br><small>${L0[0]} · ${ppl?'Max PP '+ppl:'No PP limit'}</small>${TH.team?'<br><small>'+esc(TH.team)+'</small>':''}</div></div>`;
+if(ppl)top+=`<div class="warn"><b>PP limit ${ppl}.</b>${cr[6]?(cr[6]>ppl?' Stock PP is '+cr[6]+', already '+(cr[6]-ppl)+' over, so cut power or add weight.':' Stock PP is '+cr[6]+', leaving about '+(ppl-cr[6])+' PP to spend.'):''} Check your PP in the tuning menu; it updates live. If you are over: ${c('restr')||ecu?'cut power with the '+(c('restr')?'power restrictor':'ECU output')+' (keeps cornering, loses straight speed)':'fit a power restrictor or ECU to cut power (keeps cornering, loses straight speed)'}, or ${c('ballast')?'add ballast':'install ballast'} (keeps power, hurts everything), or drop a tyre compound (big PP saving, big grip loss). If you are under, add power or step up a tyre.</div>`;
+if(notes.length)top+=`<h3>Adjusted for your problems</h3><ul>${notes.map(n=>`<li>${n}</li>`).join('')}</ul>`;
+else if(prob.trim())top+=`<div class="ok">No keywords recognised in your notes. Try words like understeer, oversteer, wheelspin, braking, bumpy or slow on straights.</div>`;
+let h=top,t=`${name} | ${d} | ${kg}kg\n${v('track')} - ${L0[0]} | ${ppl?'Max PP '+ppl:'No PP limit'}\n`+(notes.length?'\nProblems addressed:\n'+notes.map(n=>' - '+n).join('\n')+'\n':'');
+S.forEach(([k,r,x])=>{h+=`<h3>${k}</h3><div class="tw"><table>${r.map(q=>`<tr${/Locked|Not installed/.test(q[1])?' class="lock"':''}><td>${q[0]}</td><td><b>${q[1]}</b></td><td class="n">${q[2]||''}</td></tr>`).join('')}</table></div>${x||''}`;t+=`\n${k}\n`+r.map(q=>`  ${q[0]}: ${q[1]}`).join('\n')});
+h+=`<h3>Installed parts</h3><p style="font-size:13px;color:var(--mu)">${ins.join(' · ')}</p><p class="foot">Baseline starting values from general tuning rules of thumb, not an official GT7 formula. Car stats are stock figures and engine upgrades are not added to power. Change one thing at a time.</p>${TH.note?'<p>'+esc(TH.note)+'</p>':''}`;
+t+='\nParts: '+ins.join(', ');window.TXT=t;
+$('out').innerHTML=h;$('actions').style.display='flex';if(aero)wireCalc(pF,pR)}
+$('go').onclick=gen;
+$('cp').onclick=()=>{try{navigator.clipboard.writeText(window.TXT);$('cp').textContent='Copied'}catch(e){$('cp').textContent='Copy failed'}setTimeout(()=>$('cp').textContent='Copy as text',1500)};
+$('shr').onclick=async()=>{const u=location.href,b=$('shr');try{if(navigator.share){await navigator.share({title:document.title,url:u})}else{await navigator.clipboard.writeText(u);b.textContent='Link copied';setTimeout(()=>b.textContent='Share this app',1800)}}catch(e){}};
+</script></body></html>
