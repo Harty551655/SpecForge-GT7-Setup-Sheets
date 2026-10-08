@@ -11,6 +11,7 @@ Live app: [Open SpecForge GT7](https://harty551655.github.io/SpecForge-GT7-Setup
 ## What it does
 
 - **Car picker:** choose by manufacturer or by category (Gr.1, 2, 3, 4, B, N, X). Drivetrain, power, weight and base PP fill in automatically.
+- My garage: add the cars you own to a personal list, see how many you have, remove them, and tick "Only show cars in my garage" to shorten the car dropdown. It is saved in your own browser, and a copy/paste code moves it to another device.
 - **Parts list:** tick what you have installed (suspension, LSD, transmission, ECU, adjustable downforce, brake balance controller, ballast, power restrictor, tyres, plus engine and drivetrain upgrades). Settings your car cannot adjust show as locked, with the part you would need.
 - **Track and layout:** pick the track, then the layout. Each layout is tagged fast, mixed or technical, which drives the downforce, gearing, ride height and toe values.
 - **PP limit:** enter a max PP and the sheet shows how much PP the car has left to spend, or how far over the limit it already is, with ways to get under it.
