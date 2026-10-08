@@ -4,7 +4,7 @@ A free, single-page tool that generates a starting tuning sheet for any car in G
 
 > **Unofficial fan project.** Not affiliated with, endorsed by, or sponsored by Polyphony Digital or Sony Interactive Entertainment. Gran Turismo and related names and marks belong to their respective owners.
 
-**Live app:** `https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/`
+**Live app:** `https://harty551655.github.io/SpecForge-GT7-Setup-Sheets/`
 
 ---
 
@@ -105,16 +105,6 @@ Corvette C7 ZR1 '19|N|FR|754|1615|634|Chevrolet
 Copy the grey **Code line** column, paste it into the `RAW` block, save, and upload the file again. The **Check** column flags anything missing or wrong.
 
 ---
-
-## Putting it online with GitHub Pages (free)
-
-1. Create a GitHub account at [github.com](https://github.com).
-2. Click **+** at the top right, then **New repository**. Name it (for example `specforge-gt7`), set it to **Public**, tick **Add a README file**, and create it.
-3. Make sure the app file is named exactly `index.html`.
-4. In the repository, click **Add file**, then **Upload files**. Drag in `index.html` (and the spreadsheet if you want it stored there), then **Commit changes**.
-5. Go to **Settings**, then **Pages**. Under **Build and deployment**, choose **Deploy from a branch**, pick the `main` branch and the `/ (root)` folder, then **Save**.
-6. Wait a minute or two and refresh. Your link appears at the top of the Pages settings: `https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/`.
-7. Share that link. The **Share this app** button at the bottom of the page also copies or shares the address it is open on.
 
 ### Updating later
 
