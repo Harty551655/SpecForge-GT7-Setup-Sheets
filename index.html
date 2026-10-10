@@ -154,96 +154,580 @@ const applyTheme=()=>{gid('ttl').innerHTML=esc(TH.title1)+' <span>'+esc(TH.title
  };
 applyTheme();try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme)}catch(e){}
 // [name, drivetrain, stock hp, stock kg] approximate values
-const RAW=`#Alfa Romeo
-4C Launch Edition '14|N|MR|235|950|533
-Giulia GTAm '20|N|FR|532|1580|588
-#Audi
-R8 Coupé V10 plus '16|N|4WD|601|1454|608
-R8 LMS Evo '19|3|MR|576|1235|724
-TT Cup '16|4|FF|335|1125|642
-#BMW
-M2 Competition '18|N|FR|405|1575|536
-M3 Coupé '03|N|FR|339|1560|502
-M4 Coupé '14|N|FR|425|1497|552
-M4 Gr.4|4|FR|394|1365|626
-#Chevrolet
-Camaro SS '16|N|FR|453|1672|535
-Corvette C7 Stingray '14|N|FR|453|1500|550
-Corvette C8 Stingray '20|N|MR|494|1530|570
-Corvette C7 Gr.3|3|FR|571|1300|707
-#Dodge
-Viper GTS '13|N|FR|640|1556|580
-Challenger SRT Demon '18|N|FR|840|1941|598
-#Ferrari
-458 Italia '09|N|MR|563|1485|597
-F40 '92|N|MR|471|1100|587
-296 GTB '22|N|MR|818|1470|661
-458 Italia GT3 '13|3|MR|542|1215|728
-#Ford
-Focus RS '18|N|4WD|350|1557|502
-GT '17|N|MR|646|1385|629
-Mustang GT Premium Fastback '15|N|FR|434|1681|524
-Mustang Gr.3|3|FR|568|1300|706
-#Honda
-Integra Type R (DC2) '98|N|FF|198|1080|468
-S2000 '99|N|FR|242|1240|480
-NSX Type R '92|N|MR|284|1230|514
-Civic Type R Limited Edition (FK8) '20|N|FF|315|1370|513
-Civic Type R (FL5) '22|N|FF|325|1430|529
-NSX '17|N|4WD|570|1780|555
-#Hyundai
-ELANTRA N '23|N|FF|276|1450|501
-#Lamborghini
-Countach LP400 '74|N|MR|373|1065|545
-Huracán LP 610-4 '15|N|4WD|601|1422|613
-Huracán GT3 '15|3|MR|576|1230|720
-#Lexus
-LFA '10|N|FR|552|1480|588
-RC F GT3 '17|3|FR|535|1300|715
-#Mazda
-Roadster S (ND) '15|N|FR|128|990|431
-ɛ̃fini RX-7 Type R (FD) '91|N|FR|251|1260|484
-RX-7 Spirit R Type A (FD) '02|N|FR|292|1270|515
-#McLaren
-F1 '94|N|MR|626|1140|611
-650S GT3 '15|3|MR|542|1240|706
-#AMG
-Mercedes-AMG GT R '17|N|FR|576|1660|587
-Mercedes-AMG GT3 '20|3|FR|614|1285|731
-#Mitsubishi
-Lancer Evolution IX MR GSR '06|N|4WD|277|1420|497
-Lancer Evolution Final Edition '15|N|4WD|309|1530|496
-#Nissan
-Silvia spec-R Aero (S15) '02|N|FR|246|1240|490
-Skyline GT-R V･spec II (R32) '94|N|4WD|306|1500|499
-Skyline GT-R V･spec II Nür (R34) '02|N|4WD|336|1560|505
-Fairlady Z (Z34) '08|N|FR|331|1530|513
-Z Performance '23|N|FR|399|1543|523
-GT-R NISMO '17|N|4WD|591|1740|614
-GT-R NISMO GT3 '18|3|FR|576|1285|721
-#Porsche
-911 Carrera RS (901) '73|N|RR|206|1075|485
-Cayman GT4 '16|N|MR|379|1340|575
-911 Turbo S (992) '20|N|4WD|641|1640|604
-911 GT3 RS (992) '22|N|RR|517|1450|655
-911 GT3 R (992) '22|3|RR|557|1250|732
-962 C '88|1|MR|690|850|815
-963 '24|1|MR|670|1030|857
-#Subaru
-BRZ S '21|N|FR|231|1270|483
-WRX STI Type S '14|N|4WD|302|1490|489
-Impreza 22B-STi Version '98|N|4WD|289|1270|501
-#Toyota
-Corolla Levin 3door 1600GT APEX (AE86) '83|N|FR|127|940|381
-Supra RZ '97|N|FR|325|1510|507
-MR2 GT-S '97|N|MR|241|1270|478
-GR86 RZ '21|N|FR|231|1270|483
-GR Supra RZ '20|N|FR|382|1530|533
-GR Yaris 1st Edition RZ '20|N|4WD|268|1290|502
-GR010 HYBRID '21|1|4WD|670|1040|852
-#Volkswagen
-Golf VII GTI '14|N|FF|216|1390|454
-Scirocco Gr.4|4|FF|358|1050|657`;
+const RAW=`Abarth 1500 Biposto Bertone B.A.T 1 '52|N|FR|73|870|258|Abarth
+Abarth 500 '09|N|FF|133|1035|413|Abarth
+Abarth 595 Esseesse '70|N|RR|30|470|197|Abarth
+AFEELA 1 '26|X|4WD|0|0|504|AFEELA
+AFEELA Prototype 2024|X|4WD|0|0|511|AFEELA
+Alfa Romeo 155 2.5 V6 TI '93|4|4WD|413|1010|665|Alfa Romeo
+Alfa Romeo 4C Gr.3|3|MR|528|1220|712|Alfa Romeo
+Alfa Romeo 4C Gr.3 Road Car|N|MR|443|1320|577|Alfa Romeo
+Alfa Romeo 4C Gr.4|4|MR|295|1020|625|Alfa Romeo
+Alfa Romeo 4C Launch Edition '14|N|MR|235|950|533|Alfa Romeo
+Alfa Romeo 8C 2900B Touring Berlinetta '38|N|FR|179|1310|379|Alfa Romeo
+Alfa Romeo 8C Competizione '08|N|FR|442|1585|544|Alfa Romeo
+Alfa Romeo Giulia GTAm '20|N|FR|532|1580|588|Alfa Romeo
+Alfa Romeo Giulia Sprint GT Veloce '67|N|FR|104|1040|336|Alfa Romeo
+Alfa Romeo GIULIA TZ2 carrozzata da ZAGATO '65|X|FR|168|620|513|Alfa Romeo
+Alfa Romeo MiTo 1.4 T Sport '09|N|FF|152|1145|425|Alfa Romeo
+Alpine A110 1600S '72|N|RR|138|715|422|Alpine
+Alpine A110 Première Édition '17|N|MR|248|1103|532|Alpine
+Alpine A220 Race Car '68|X|MR|319|690|582|Alpine
+Alpine Vision Gran Turismo|X|MR|443|900|671|Alpine
+Alpine Vision Gran Turismo 2017|1|RR|594|930|853|Alpine
+Alpine Vision Gran Turismo Race Mode|X|MR|443|900|738|Alpine
+Mercedes-AMG C 63 S '15|N|FR|503|1725|548|AMG
+Mercedes-AMG GT Black Series '20|N|FR|719|1540|671|AMG
+Mercedes-AMG GT R '17|N|FR|576|1660|587|AMG
+Mercedes-AMG GT S '15|N|FR|502|1570|573|AMG
+Mercedes-AMG GT Safety Car|X|FR|502|1570|570|AMG
+Mercedes-AMG GT3 '16|3|FR|614|1325|724|AMG
+Mercedes-AMG GT3 '20|3|FR|614|1285|731|AMG
+Mercedes-Benz 300 SEL 6.8 AMG '71|X|FR|422|1635|496|AMG
+Mercedes-Benz A 45 AMG 4MATIC '13|N|4WD|355|1555|505|AMG
+Mercedes-Benz AMG Vision Gran Turismo|X|FR|576|1385|650|AMG
+Mercedes-Benz AMG Vision Gran Turismo Racing Series|X|FR|590|1300|707|AMG
+Mercedes-Benz SLS AMG '10|N|FR|570|1620|578|AMG
+Mercedes-Benz SLS AMG Gr.4|4|FR|419|1415|635|AMG
+Mercedes-Benz SLS AMG GT3 '11|3|FR|614|1350|702|AMG
+Amuse NISMO 380RS Super Leggera|N|FR|380|1370|555|Amuse
+Amuse S2000 GT1 Turbo|N|FR|616|1120|679|Amuse
+Aston Martin DB11 '16|N|FR|599|1770|566|Aston Martin
+Aston Martin DB3S '53|X|FR|224|856|464|Aston Martin
+Aston Martin DB5 '64|N|FR|281|1468|418|Aston Martin
+Aston Martin DBR9 GT1 '10|3|FR|599|1100|711|Aston Martin
+Aston Martin DP-100 Vision Gran Turismo|X|4WD|799|1375|700|Aston Martin
+Aston Martin One-77 '11|N|FR|748|1630|614|Aston Martin
+Aston Martin V12 Vantage GT3 '12|3|FR|591|1250|706|Aston Martin
+Aston Martin V8 Vantage S '15|N|FR|429|1610|542|Aston Martin
+Aston Martin Valkyrie '21|N|MR|1139|1270|854|Aston Martin
+Aston Martin Vantage '18|N|FR|502|1530|574|Aston Martin
+Aston Martin Vantage Gr.4|4|FR|399|1350|631|Aston Martin
+Aston Martin Vulcan '16|N|FR|820|1360|757|Aston Martin
+Audi e-tron Vision Gran Turismo|X|4WD|803|1450|851|Audi
+Audi R18 '16|1|4WD|506|875|875|Audi
+Audi R18 TDI '11|1|MR|532|900|872|Audi
+Audi R8 4.2 FSI R tronic '07|N|4WD|414|1560|546|Audi
+Audi R8 Coupé V10 plus '16|N|4WD|601|1454|608|Audi
+Audi R8 LMS '15|3|MR|585|1225|724|Audi
+Audi R8 LMS Evo '19|3|MR|576|1235|724|Audi
+Audi RS 5 Turbo DTM '19|2|FR|603|986|854|Audi
+Audi Sport quattro S1 Pikes Peak '87|B|4WD|588|1000|652|Audi
+Audi TT Coupé 3.2 quattro '03|N|4WD|239|1520|454|Audi
+Audi TT Cup '16|4|FF|335|1125|642|Audi
+Audi TTS Coupé '09|N|4WD|268|1415|504|Audi
+Audi TTS Coupé '14|N|4WD|305|1385|518|Audi
+Audi Vision Gran Turismo|1|4WD|735|1250|872|Audi
+Autobianchi A112 Abarth '85|N|FF|71|710|328|Autobianchi
+BAC Mono '16|N|MR|304|580|640|BAC
+BMW 3.0 CSL '71|N|FR|177|1165|408|BMW
+BMW 3.0 CSL '73|N|FR|202|1250|413|BMW
+BMW i3 '15|X|MR|166|1260|404|BMW
+BMW M Hybrid V8 '25|1|MR|641|1030|845|BMW
+BMW M2 Competition '18|N|FR|405|1575|536|BMW
+BMW M3 '89|N|FR|212|1200|461|BMW
+BMW M3 '97|N|FR|316|1460|481|BMW
+BMW M3 Coupé '03|N|FR|339|1560|502|BMW
+BMW M3 Coupé '07|N|FR|415|1655|523|BMW
+BMW M3 GT '11|3|FR|500|1245|693|BMW
+BMW M3 Sport Evolution '89|N|FR|234|1200|470|BMW
+BMW M4 Coupé '14|N|FR|425|1497|552|BMW
+BMW M4 Gr.4|4|FR|394|1365|626|BMW
+BMW M4 Safety Car|X|FR|425|1497|552|BMW
+BMW M6 GT3 Endurance Model '16|3|FR|584|1300|732|BMW
+BMW M6 GT3 Sprint Model '16|3|FR|584|1300|732|BMW
+BMW McLaren F1 GTR Race Car '97|2|MR|602|950|776|BMW
+BMW Vision Gran Turismo|X|FR|541|1180|714|BMW
+BMW Z4 3.0i '03|N|FR|227|1290|477|BMW
+BMW Z4 GT3 '11|3|FR|522|1190|706|BMW
+BMW Z8 '01|N|FR|395|1610|522|BMW
+Bugatti Chiron '16|N|4WD|1479|1995|664|Bugatti
+Bugatti Veyron 16.4 '13|N|4WD|986|1888|626|Bugatti
+Bugatti Veyron Gr.4|4|4WD|433|1650|624|Bugatti
+Bugatti Vision Gran Turismo|X|4WD|1626|1400|901|Bugatti
+Bugatti Vision Gran Turismo (Gr.1)|1|4WD|641|980|914|Bugatti
+BVLGARI Aluminium Vision Gran Turismo|X|MR|394|1000|624|BVLGARI
+Caterham Seven Superlight R500 '08|N|FR|263|516|569|Caterham
+Chaparral 2J '70|X|MR|683|821|828|Chaparral
+Chaparral 2X Vision Gran Turismo|X|---|905|450|1103|Chaparral
+Chevrolet Camaro 1969 Race-Mod|N|FR|657|1320|644|Chevrolet
+Chevrolet Camaro SS '16|N|FR|453|1672|535|Chevrolet
+Chevrolet Camaro Z28 '69|N|FR|289|1415|423|Chevrolet
+Chevrolet Camaro ZL1 1LE Package '18|N|FR|649|1732|623|Chevrolet
+Chevrolet Chevelle SS 454 Sport Coupé '70|N|FR|449|1762|437|Chevrolet
+Chevrolet Corvette (C1) '58|N|FR|243|1327|412|Chevrolet
+Chevrolet Corvette C7 Gr.3|3|FR|571|1300|707|Chevrolet
+Chevrolet Corvette C7 Gr.3 Road Car|N|FR|493|1480|579|Chevrolet
+Chevrolet Corvette C7 Gr.4|4|FR|414|1350|640|Chevrolet
+Chevrolet Corvette C7 Stingray '14|N|FR|453|1500|550|Chevrolet
+Chevrolet Corvette C7 ZR1 '19|N|FR|754|1615|634|Chevrolet
+Chevrolet Corvette C8 Stingray '20|N|MR|494|1530|570|Chevrolet
+Chevrolet Corvette CX Concept '25|X|4WD|2145|1400|821|Chevrolet
+Chevrolet Corvette CX.R Vision Gran Turismo Concept|X|4WD|2038|1250|939|Chevrolet
+Chevrolet Corvette Sting Ray Sport Coupe (C2) '63|N|FR|359|1380|501|Chevrolet
+Chevrolet Corvette Stingray Convertible (C3) '69|N|FR|298|1552|431|Chevrolet
+Chevrolet Corvette Stingray L46 350 (C3) '69|N|FR|350|1490|492|Chevrolet
+Chevrolet Corvette Stingray Racer Concept '59|X|FR|314|1150|506|Chevrolet
+Chevrolet Corvette Z06 (C5) '01|N|FR|384|1409|537|Chevrolet
+Chevrolet Corvette ZR-1 (C4) '89|N|FR|375|1572|508|Chevrolet
+Chevrolet Corvette ZR1 (C6) '09|N|FR|639|1508|585|Chevrolet
+Chris Holstrom Concepts 1967 Chevy Nova|N|FR|732|1366|592|Chris Holstrom Concepts
+Citroën BX 19 TRS '87|N|FF|103|995|351|Citroën
+Citroën DS 21 Pallas '70|N|FF|103|1300|323|Citroën
+GT by Citroën Gr.4|4|MR|394|1300|642|Citroën
+GT by Citroën Race Car (Gr.3)|3|MR|599|1200|721|Citroën
+GT by Citroën Road Car|N|MR|500|1450|599|Citroën
+Daihatsu Copen Active Top '02|N|FF|62|830|312|Daihatsu
+DAIHATSU COPEN RJ Vision Gran Turismo|X|FF|146|600|508|Daihatsu
+De Tomaso Mangusta '69|N|MR|300|1185|461|De Tomaso
+De Tomaso Pantera '71|N|MR|325|1420|448|De Tomaso
+DMC DeLorean S2 '04|N|RR|197|1288|455|DMC
+Dodge Challenger R/T '70|N|FR|425|1724|471|Dodge
+Dodge Challenger SRT Demon '18|N|FR|840|1941|598|Dodge
+Dodge Charger R/T 426 Hemi '68|N|FR|425|1805|445|Dodge
+Dodge Charger SRT Hellcat '15|N|FR|707|1980|559|Dodge
+Dodge Charger SRT Hellcat Safety Car|X|FR|707|1980|557|Dodge
+Dodge SRT Tomahawk GTS-R Vision Gran Turismo|X|4WD|1449|663|1211|Dodge
+Dodge SRT Tomahawk S Vision Gran Turismo|X|4WD|1006|921|962|Dodge
+Dodge SRT Tomahawk Vision Gran Turismo (Gr.1)|1|MR|693|950|890|Dodge
+Dodge SRT Tomahawk X Vision Gran Turismo|X|4WD|2586|749|1403|Dodge
+Dodge Super Bee '70|N|FR|335|1533|414|Dodge
+Dodge Viper Gr.4|4|FR|428|1400|642|Dodge
+Dodge Viper GTS '02|N|FR|448|1569|536|Dodge
+Dodge Viper GTS '13|N|FR|640|1556|580|Dodge
+Dodge Viper SRT GT3-R '15|3|FR|678|1290|731|Dodge
+Dodge Viper SRT10 Coupe '06|N|FR|508|1565|556|Dodge
+DS 3 Racing '11|N|FF|203|1165|457|DS AUTOMOBILES
+Eckert's Rod & Custom Mach Forty|N|MR|787|1588|609|Eckert's Rod & Custom
+Enzo Ferrari '02|N|MR|658|1255|635|Ferrari
+Ferrari 250 GT Berlinetta passo corto '61|N|FR|275|960|468|Ferrari
+Ferrari 250 GTO '62|X|FR|295|880|530|Ferrari
+Ferrari 296 GT3 '23|3|MR|599|1280|734|Ferrari
+Ferrari 296 GTB '22|N|MR|818|1470|661|Ferrari
+Ferrari 308 GTB '75|N|MR|251|1090|463|Ferrari
+Ferrari 330 P4 '67|X|MR|448|792|688|Ferrari
+Ferrari 365 GTB4 '71|N|FR|347|1200|532|Ferrari
+Ferrari 430 Scuderia '07|N|MR|502|1350|588|Ferrari
+Ferrari 458 Italia '09|N|MR|563|1485|597|Ferrari
+Ferrari 458 Italia Gr.4|4|MR|374|1350|619|Ferrari
+Ferrari 458 Italia GT3 '13|3|MR|542|1215|728|Ferrari
+Ferrari 499P '23|1|4WD|670|1030|851|Ferrari
+Ferrari 500 Mondial Pinin Farina Coupe '54|N|FR|168|720|475|Ferrari
+Ferrari 512 BB '76|N|MR|354|1400|515|Ferrari
+Ferrari 812 Superfast '17|N|FR|788|1525|665|Ferrari
+Ferrari Dino 246 GT '71|N|MR|191|1080|436|Ferrari
+Ferrari F12berlinetta '12|N|FR|730|1525|619|Ferrari
+Ferrari F40 '92|N|MR|471|1100|587|Ferrari
+Ferrari F430 '06|N|MR|495|1450|571|Ferrari
+Ferrari F50 '95|N|MR|511|1230|600|Ferrari
+Ferrari F8 Tributo '19|N|MR|710|1330|673|Ferrari
+Ferrari FXX K '14|N|MR|1034|1165|755|Ferrari
+Ferrari GTO '84|N|MR|393|1160|547|Ferrari
+Ferrari LaFerrari '13|N|MR|949|1255|697|Ferrari
+Ferrari Testarossa '91|N|MR|384|1506|513|Ferrari
+Ferrari Vision Gran Turismo|X|4WD|1363|1250|892|Ferrari
+FIAT 500 1.2 8V Lounge SS '08|N|FF|65|1010|294|FIAT
+FIAT 500 F '68|N|RR|16|520|112|FIAT
+FIAT Panda 30 CL '85|N|FF|29|650|174|FIAT
+1932 Ford Roadster|N|FR|179|1115|404|Ford
+Ford Escort RS Cosworth '92|N|4WD|223|1275|471|Ford
+Ford F-150 SVT Raptor '11|N|4WD|411|2724|397|Ford
+Ford Focus Gr.B Rally Car|B|4WD|538|1260|662|Ford
+Ford Focus RS '18|N|4WD|350|1557|502|Ford
+Ford Focus ST '15|N|FF|250|1462|483|Ford
+Ford GT '06|N|MR|550|1451|583|Ford
+Ford GT '17|N|MR|646|1385|629|Ford
+Ford GT LM Race Car Spec II|3|MR|606|1130|712|Ford
+Ford GT LM Spec II Test Car|3|MR|590|1165|708|Ford
+Ford GT Race Car '18|3|MR|527|1200|705|Ford
+Ford GT40 Mark I '66|N|MR|354|1080|542|Ford
+Ford Mark IV Race Car '67|X|MR|503|1000|658|Ford
+Ford Mustang Boss 429 '69|N|FR|374|1614|484|Ford
+Ford Mustang Gr.3|3|FR|568|1300|706|Ford
+Ford Mustang Gr.3 Road Car|N|FR|502|1500|580|Ford
+Ford Mustang Gr.4|4|FR|395|1400|626|Ford
+Ford Mustang Gr.B Rally Car|B|4WD|549|1380|645|Ford
+Ford Mustang GT Premium Fastback '15|N|FR|434|1681|524|Ford
+Ford Mustang Mach 1 '71|N|FR|302|1615|417|Ford
+Ford Shelby GT350R '16|N|FR|525|1658|561|Ford
+Ford Sierra RS 500 Cosworth '87|N|FR|223|1207|465|Ford
+Garage RCR Civic|N|FF|389|1014|603|Garage RCR
+Genesis G70 3.3T AWD Prestige Package '22|N|4WD|366|1815|481|Genesis
+Genesis G70 GR4|4|4WD|414|1400|640|Genesis
+Genesis X GR3|3|FR|547|1280|715|Genesis
+Genesis X Gran Berlinetta Vision Gran Turismo Concept|X|4WD|869|1060|782|Genesis
+Genesis X Gran Racer Vision Gran Turismo Concept|1|4WD|869|1089|856|Genesis
+Gran Turismo F1500T-A|X|MR|986|540|949|Gran Turismo
+Gran Turismo F3500-A|X|MR|773|529|978|Gran Turismo
+Gran Turismo F3500-B|X|MR|719|505|974|Gran Turismo
+Gran Turismo Racing Kart 125 Shifter|X|MR|49|105|580|Gran Turismo
+Gran Turismo Red Bull X2014 Junior|X|MR|246|550|716|Gran Turismo
+Gran Turismo Red Bull X2014 Standard|X|MR|798|650|1072|Gran Turismo
+Gran Turismo Red Bull X2019 Competition|X|MR|804|650|983|Gran Turismo
+GReddy Fugu Z|N|FR|294|1100|543|GReddy
+Greening Auto Company Maverick|N|FR|1199|1633|656|Greening Auto Company
+Honda Beat '91|N|MR|63|760|326|Honda
+Honda Civic Si Extra (EF) '87|N|FF|128|910|391|Honda
+Honda Civic SiR･II (EG) '93|N|FF|167|1070|399|Honda
+Honda Civic Type R (EK) '97|N|FF|176|1050|443|Honda
+Honda Civic Type R (EK) '98|N|FF|181|1050|444|Honda
+Honda Civic Type R (EK) Touring Car|N|FF|247|845|552|Honda
+Honda Civic Type R (FK2) '15|N|FF|305|1380|509|Honda
+Honda Civic Type R (FL5) '22|N|FF|325|1430|529|Honda
+Honda Civic Type R Limited Edition (FK8) '20|N|FF|315|1370|513|Honda
+Honda CR-V e:HEV EX・Black Edition '21|N|4WD|181|1700|379|Honda
+Honda Fit Hybrid '14|N|FF|138|1080|345|Honda
+Honda Integra Type R (DC2) '95|N|FF|197|1060|470|Honda
+Honda Integra Type R (DC2) '98|N|FF|198|1080|468|Honda
+Honda N-ONE RS '22|N|FF|63|840|311|Honda
+Honda NSX '17|N|4WD|570|1780|555|Honda
+Honda NSX CONCEPT-GT '16|2|MR|603|1049|861|Honda
+Honda NSX Gr.3|3|MR|568|1300|702|Honda
+Honda NSX Gr.4|4|MR|394|1360|635|Honda
+Honda NSX Gr.B Rally Car|B|4WD|557|1300|657|Honda
+Honda NSX GT500 '00|3|MR|481|1150|696|Honda
+Honda NSX GT500 '08|2|MR|518|1150|796|Honda
+Honda NSX Type R '02|N|MR|290|1270|519|Honda
+Honda NSX Type R '92|N|MR|284|1230|514|Honda
+Honda Project 2&4 powered by RC213V|X|MR|211|405|575|Honda
+Honda RA272 '65|X|MR|228|498|633|Honda
+Honda S2000 '99|N|FR|242|1240|480|Honda
+Honda S660 '15|N|MR|63|830|367|Honda
+Honda S800 '66|N|FR|68|720|276|Honda
+Honda Sports Vision Gran Turismo|X|MR|403|899|663|Honda
+Hyundai ELANTRA N '23|N|FF|276|1450|501|Hyundai
+Hyundai ELANTRA N TC '24|4|FF|350|1265|643|Hyundai
+Hyundai Genesis Coupe 3.8 Track '13|N|FR|343|1557|503|Hyundai
+Hyundai Genesis Gr.3|3|FR|575|1250|717|Hyundai
+Hyundai Genesis Gr.4|4|FR|384|1350|620|Hyundai
+Hyundai Genesis Gr.B Rally Car|B|4WD|499|1250|642|Hyundai
+Hyundai IONIQ 5 N '24|N|4WD|641|2210|544|Hyundai
+Hyundai IONIQ 6 N '25|N|4WD|641|2205|513|Hyundai
+HYUNDAI N 2025 Vision Gran Turismo|X|4WD|870|972|921|Hyundai
+HYUNDAI N 2025 Vision Gran Turismo (Gr.1)|1|4WD|640|972|895|Hyundai
+INFINITI CONCEPT Vision Gran Turismo|X|FR|535|1680|639|Infiniti
+Italdesign EXENEO Vision Gran Turismo Off-road Mode|X|4WD|1219|1000|755|Italdesign
+Italdesign EXENEO Vision Gran Turismo Street Mode|X|4WD|1219|1000|758|Italdesign
+Jaguar D-type '54|X|FR|249|850|460|Jaguar
+Jaguar E-type Coupé '61|N|FR|264|1300|425|Jaguar
+Jaguar F-type Gr.3|3|FR|552|1250|717|Jaguar
+Jaguar F-type Gr.4|4|FR|399|1350|630|Jaguar
+Jaguar F-type R Coupé '14|N|FR|542|1650|558|Jaguar
+Jaguar Vision Gran Turismo Coupé|X|4WD|1004|1400|742|Jaguar
+Jaguar Vision Gran Turismo Roadster|X|4WD|1004|1400|731|Jaguar
+Jaguar Vision Gran Turismo SV|X|4WD|1876|1400|995|Jaguar
+Jaguar XJ13 '66|X|MR|510|998|660|Jaguar
+Jaguar XJ220 '92|N|MR|515|1372|601|Jaguar
+Jaguar XJR-9 '88|1|MR|749|894|837|Jaguar
+Jeep Willys MB '45|N|4WD|60|1113|171|Jeep
+KTM X-BOW R '12|N|MR|298|790|586|KTM
+Lambo V12 Vision Gran Turismo|X|4WD|774|819|768|Lamborghini
+Lamborghini Aventador LP 700-4 '11|N|4WD|690|1575|603|Lamborghini
+Lamborghini Aventador LP 750-4 Superveloce '15|N|4WD|739|1525|644|Lamborghini
+Lamborghini Countach 25th Anniversary '88|N|MR|449|1490|522|Lamborghini
+Lamborghini Countach LP400 '74|N|MR|373|1065|545|Lamborghini
+Lamborghini Diablo GT '00|N|MR|571|1490|558|Lamborghini
+Lamborghini Gallardo LP 560-4 '08|N|4WD|552|1410|590|Lamborghini
+Lamborghini Huracán Gr.4|4|4WD|404|1365|648|Lamborghini
+Lamborghini Huracán GT3 '15|3|MR|576|1230|720|Lamborghini
+Lamborghini Huracán LP 610-4 '15|N|4WD|601|1422|613|Lamborghini
+Lamborghini Miura P400 Bertone Prototype '67|N|MR|349|980|559|Lamborghini
+Lamborghini Murciélago LP 640 '09|N|4WD|631|1665|584|Lamborghini
+Lamborghini Urus '18|N|4WD|641|2197|540|Lamborghini
+Lamborghini Veneno '14|N|4WD|739|1450|680|Lamborghini
+Lancia Delta HF Integrale Evoluzione '91|N|4WD|209|1350|391|Lancia
+Lancia Delta HF Integrale Rally Car '92|B|4WD|330|1100|616|Lancia
+Lancia Stratos '73|N|MR|185|980|441|Lancia
+Lexus LC500 '17|N|FR|469|1940|524|Lexus
+LEXUS LF-LC GT "Vision Gran Turismo"|X|FR|612|1075|843|Lexus
+Lexus LFA '10|N|FR|552|1480|588|Lexus
+Lexus RC F '14|N|FR|469|1790|531|Lexus
+Lexus RC F Gr.4|4|FR|419|1400|636|Lexus
+Lexus RC F GT3 '17|3|FR|535|1300|715|Lexus
+Lexus RC F GT3 prototype '16|3|FR|527|1300|709|Lexus
+Lexus RC F GT500 '16|2|FR|614|1020|861|Lexus
+Lexus SC430 GT500 '08|2|FR|516|1100|796|Lexus
+Maserati A6GCS/53 Spyder '54|X|FR|166|740|491|Maserati
+Maserati GranTurismo S '08|N|FR|439|1780|516|Maserati
+Maserati MC20 '20|N|MR|621|1500|607|Maserati
+Maserati Merak SS '80|N|MR|216|1420|398|Maserati
+Mazda 787B '91|1|MR|690|830|819|Mazda
+Mazda Atenza Gr.3|3|FR|567|1280|709|Mazda
+Mazda Atenza Gr.3 Road Car|N|FR|483|1450|578|Mazda
+Mazda Atenza Gr.4|4|4WD|393|1380|614|Mazda
+Mazda Atenza Sedan XD L Package '15|N|4WD|172|1600|364|Mazda
+Mazda CX-30 X Smart Edition '21|N|FF|187|1490|391|Mazda
+Mazda Demio XD Touring '15|N|FF|103|1080|342|Mazda
+Mazda Eunos Roadster (NA Special Package) '89|N|FR|117|940|380|Mazda
+Mazda ɛ̃fini RX-7 Type R (FD) '91|N|FR|251|1260|484|Mazda
+Mazda LM55 Vision Gran Turismo|X|4WD|0|0|917|Mazda
+Mazda LM55 Vision Gran Turismo (Gr.1)|1|4WD|641|880|885|Mazda
+Mazda Roadster NR-A (ND) '22|N|FR|130|1010|430|Mazda
+Mazda Roadster S (ND) '15|N|FR|128|990|431|Mazda
+Mazda Roadster Touring Car|N|FR|205|795|543|Mazda
+Mazda RX-7 GT-X (FC) '90|N|FR|203|1250|458|Mazda
+Mazda RX-7 Spirit R Type A (FD) '02|N|FR|292|1270|515|Mazda
+Mazda RX-8 Spirit R '12|N|FR|230|1350|481|Mazda
+Mazda RX-VISION '15|N|FR|517|1290|612|Mazda
+MAZDA RX-VISION GT3 CONCEPT|3|FR|562|1250|723|Mazda
+Mazda RX500 '70|N|MR|247|850|460|Mazda
+MAZDA SPIRIT RACING ROADSTER 12R '25|N|FR|197|1050|485|Mazda
+MAZDA3 Gr.4|4|FF|380|1200|644|Mazda
+MAZDA3 X Burgundy Selection '19|N|4WD|177|1480|413|Mazda
+McLaren 650S Coupe '14|N|MR|641|1330|625|McLaren
+McLaren 650S Gr.4|4|MR|399|1300|616|McLaren
+McLaren 650S GT3 '15|3|MR|542|1240|706|McLaren
+McLaren F1 '94|N|MR|626|1140|611|McLaren
+McLaren F1 GTR - BMW '95|3|MR|600|1050|724|McLaren
+McLaren MP4-12C '10|N|MR|600|1350|614|McLaren
+McLaren MP4/4 '88|X|MR|675|540|909|McLaren
+McLaren P1 GTR '16|N|MR|986|1345|773|McLaren
+McLaren Ultimate Vision Gran Turismo|X|MR|1134|900|909|McLaren
+McLaren Ultimate Vision Gran Turismo (Gr.1)|1|MR|813|900|881|McLaren
+Mercedes-Benz 190 E 2.5-16 Evolution II '91|N|FR|231|1340|457|Mercedes-Benz
+Mercedes-Benz 300 SL (W194) '52|X|FR|178|1080|420|Mercedes-Benz
+Mercedes-Benz 300 SL Coupé '54|N|FR|212|1295|392|Mercedes-Benz
+Mercedes-Benz CLK-LM '98|2|MR|599|940|799|Mercedes-Benz
+Mercedes-Benz S Barker Tourer '29|N|FR|177|1270|305|Mercedes-Benz
+Mercedes-Benz SLR McLaren '09|N|FR|616|1768|579|Mercedes-Benz
+Mercedes-Benz Unimog Type 411 '62|N|4WD|29|1940|13|Mercedes-Benz
+Mercedes-Benz W 196 R '55|X|FR|289|835|599|Mercedes-Benz
+Sauber Mercedes C9 '89|1|MR|710|893|832|Mercedes-Benz
+Mine's BNR34 GT-R N1 base|N|4WD|621|1350|632|Mine's
+MINI Clubman Vision Gran Turismo|X|4WD|388|1050|652|MINI
+MINI Cooper S '05|N|FF|167|1180|438|MINI
+Mini-Cooper 'S' '65|N|FF|64|605|284|MINI
+Mitsubishi Concept XR-PHEV EVOLUTION Vision Gran Turismo|X|4WD|502|1350|693|Mitsubishi
+Mitsubishi FTO GP Version R '97|N|FF|197|1150|454|Mitsubishi
+Mitsubishi GTO Twin Turbo '91|N|4WD|285|1700|453|Mitsubishi
+Mitsubishi Lancer Evolution Final Edition '15|N|4WD|309|1530|496|Mitsubishi
+Mitsubishi Lancer Evolution Final Edition Gr.3|3|FR|610|1290|722|Mitsubishi
+Mitsubishi Lancer Evolution Final Edition Gr.4|4|4WD|389|1330|630|Mitsubishi
+Mitsubishi Lancer Evolution Final Edition Gr.B Rally Car|B|4WD|521|1290|645|Mitsubishi
+Mitsubishi Lancer Evolution Final Edition Gr.B Road Car|N|4WD|473|1425|582|Mitsubishi
+Mitsubishi Lancer Evolution III GSR '95|N|4WD|264|1260|466|Mitsubishi
+Mitsubishi Lancer Evolution IV GSR '96|N|4WD|273|1350|468|Mitsubishi
+Mitsubishi Lancer Evolution IX MR GSR '06|N|4WD|277|1420|497|Mitsubishi
+Mitsubishi Lancer Evolution V GSR '98|N|4WD|306|1360|488|Mitsubishi
+Mitsubishi Lancer Evolution VI GSR T.M. EDITION Special Color Package '99|N|4WD|311|1360|503|Mitsubishi
+Mitsubishi Lancer Evolution VIII MR GSR '04|N|4WD|276|1400|498|Mitsubishi
+NISMO 400R '95|N|4WD|394|1550|529|Nismo
+NISMO R34 GT-R Z-tune '05|N|4WD|493|1600|575|Nismo
+Nissan 180SX Type X '96|N|FR|203|1220|463|Nissan
+NISSAN CONCEPT 2020 Vision Gran Turismo|X|4WD|0|0|684|Nissan
+Nissan Fairlady 240ZG (HS30) '71|N|FR|147|1010|397|Nissan
+Nissan Fairlady Z (Z34) '08|N|FR|331|1530|513|Nissan
+Nissan Fairlady Z 300ZX TwinTurbo 2seater (Z32) '89|N|FR|276|1510|465|Nissan
+Nissan Fairlady Z 432 '69|N|FR|157|1040|405|Nissan
+Nissan Fairlady Z Version S (Z33) '07|N|FR|310|1480|508|Nissan
+Nissan GT-R Gr.4|4|4WD|428|1450|634|Nissan
+Nissan GT-R Gr.B Rally Car|B|4WD|542|1350|654|Nissan
+Nissan GT-R GT500 '08|2|FR|527|1100|802|Nissan
+Nissan GT-R GT500 '99|3|FR|498|1200|696|Nissan
+Nissan GT-R LM NISMO '15|1|4WD|604|880|896|Nissan
+Nissan GT-R NISMO '17|N|4WD|591|1740|614|Nissan
+Nissan GT-R NISMO (R32) '90|N|4WD|306|1400|494|Nissan
+Nissan GT-R NISMO GT3 '13|3|FR|591|1300|699|Nissan
+Nissan GT-R NISMO GT3 '18|3|FR|576|1285|721|Nissan
+Nissan GT-R NISMO GT500 '16|2|FR|612|1020|861|Nissan
+Nissan GT-R Premium edition '17|N|4WD|564|1770|567|Nissan
+Nissan GT-R Premium edition T-spec '24|N|4WD|562|1760|570|Nissan
+Nissan GT-R Safety Car|X|4WD|564|1740|567|Nissan
+Nissan Qashqai Tekna 190 2wd e-Power '22|N|FF|187|1624|416|Nissan
+Nissan R92CP '92|1|MR|788|900|856|Nissan
+Nissan Sileighty '98|N|FR|203|1170|470|Nissan
+Nissan Silvia K's Aero (S14) '96|N|FR|216|1250|474|Nissan
+Nissan Silvia K's Dia Selection (S13) '90|N|FR|171|1140|407|Nissan
+Nissan Silvia K's Type S (S14) '94|N|FR|216|1220|475|Nissan
+Nissan Silvia Q's (S13) '88|N|FR|132|1090|381|Nissan
+Nissan Silvia spec-R Aero (S15) '02|N|FR|246|1240|490|Nissan
+Nissan Silvia spec-R Aero (S15) Touring Car|4|FR|355|1000|637|Nissan
+Nissan Skyline 2000GT-R (KPGC110) '73|N|FR|157|1145|378|Nissan
+Nissan Skyline GT-R V･spec (R33) '97|N|4WD|319|1540|501|Nissan
+Nissan Skyline GT-R V･spec II (R32) '94|N|4WD|306|1500|499|Nissan
+Nissan Skyline GT-R V･spec II Nür (R34) '02|N|4WD|336|1560|505|Nissan
+Nissan Skyline GTS-R (R31) '87|N|FR|207|1340|441|Nissan
+Nissan Skyline Hard Top 2000GT-R (KPGC10) '70|N|FR|157|1100|386|Nissan
+Nissan Skyline Super Silhouette Group 5 '84|3|FR|561|1005|688|Nissan
+Nissan Z Performance '23|N|FR|399|1543|523|Nissan
+Opel Corsa GSE Vision Gran Turismo|X|4WD|788|1170|874|Opel
+Pagani Huayra '13|N|MR|730|1350|665|Pagani
+Pagani Zonda R '09|X|MR|737|1070|751|Pagani
+Peugeot 205 GTI '88|N|FF|128|875|396|Peugeot
+Peugeot 205 Turbo 16 Evolution 2 '86|B|4WD|448|910|671|Peugeot
+Peugeot 208 GTi by Peugeot Sport '14|N|FF|204|1200|451|Peugeot
+Peugeot 908 HDi FAP '10|1|MR|700|930|885|Peugeot
+Peugeot 9X8 '25|1|4WD|670|1030|840|Peugeot
+Peugeot L500R HYbrid Vision Gran Turismo, 2017|X|4WD|509|1000|642|Peugeot
+Peugeot L750R HYbrid Vision Gran Turismo, 2017|1|4WD|693|825|883|Peugeot
+Peugeot RCZ Gr.3|3|MR|520|1200|692|Peugeot
+Peugeot RCZ Gr.3 Road Car|N|MR|468|1400|572|Peugeot
+Peugeot RCZ Gr.4|4|FF|345|1225|631|Peugeot
+Peugeot RCZ Gr.B Rally Car|B|4WD|516|1200|648|Peugeot
+Peugeot RCZ GT Line '15|N|FF|152|1350|426|Peugeot
+Peugeot SUV 2008 Allure '21|N|FF|129|1192|361|Peugeot
+PEUGEOT Vision Gran Turismo|X|4WD|873|875|749|Peugeot
+PEUGEOT Vision Gran Turismo (Gr.3)|3|MR|542|1250|693|Peugeot
+Plymouth Superbird '70|N|FR|425|1755|415|Plymouth
+Plymouth XNR Ghia Roadster '60|N|FR|250|1500|376|Plymouth
+Polestar 5 Performance '26|X|4WD|871|2503|555|Polestar
+Pontiac Firebird Trans Am '78|N|FR|219|1640|385|Pontiac
+Pontiac GTO 'The Judge' '69|N|FR|364|1610|427|Pontiac
+Porsche 356 A/1500 GS Carrera '56|N|RR|97|840|364|Porsche
+Porsche 356 A/1500 GS GT Carrera Speedster '56|N|RR|107|840|378|Porsche
+Porsche 911 Carrera RS (901) '73|N|RR|206|1075|485|Porsche
+Porsche 911 Carrera RS (964) '92|N|RR|255|1230|501|Porsche
+Porsche 911 Carrera RS (993) '95|N|RR|295|1270|513|Porsche
+Porsche 911 Carrera RS Clubsport (993) '95|N|RR|295|1235|513|Porsche
+Porsche 911 GT1 Strassenversion '97|N|MR|533|1200|617|Porsche
+Porsche 911 GT3 (996) '01|N|RR|354|1350|538|Porsche
+Porsche 911 GT3 (997) '09|N|RR|428|1395|563|Porsche
+Porsche 911 GT3 R (992) '22|3|RR|557|1250|732|Porsche
+Porsche 911 GT3 RS (991) '16|N|RR|491|1420|634|Porsche
+Porsche 911 GT3 RS (992) '22|N|RR|517|1450|655|Porsche
+Porsche 911 RSR (991) '17|3|MR|509|1243|721|Porsche
+Porsche 911 Turbo (930) '81|N|RR|295|1300|497|Porsche
+Porsche 911 Turbo S (992) '20|N|4WD|641|1640|604|Porsche
+Porsche 911 Turbo S Leichtbau (964) '93|N|RR|375|1290|537|Porsche
+Porsche 911 Turbo S Safety Car (992)|X|4WD|641|1640|604|Porsche
+Porsche 917 LIVING LEGEND|X|MR|976|1220|771|Porsche
+Porsche 917K '70|X|MR|598|800|692|Porsche
+Porsche 918 Spyder '13|N|4WD|874|1674|666|Porsche
+Porsche 919 Hybrid '16|1|4WD|499|875|880|Porsche
+Porsche 959 '87|N|4WD|443|1450|570|Porsche
+Porsche 962 C '88|1|MR|690|850|815|Porsche
+Porsche 963 '24|1|MR|670|1030|857|Porsche
+Porsche Carrera GT '04|N|MR|603|1380|612|Porsche
+Porsche Carrera GTS (904) '64|X|MR|179|650|525|Porsche
+Porsche Cayman GT4 '16|N|MR|379|1340|575|Porsche
+Porsche Cayman GT4 Clubsport '16|4|MR|379|1300|644|Porsche
+Porsche Mission X '23|X|RR|1341|0|773|Porsche
+Porsche Spyder type 550/1500RS '55|X|MR|108|590|445|Porsche
+Porsche Taycan Turbo S '19|X|4WD|751|2295|582|Porsche
+Porsche Vision Gran Turismo|X|4WD|1098|1390|758|Porsche
+Porsche Vision Gran Turismo Spyder|X|4WD|1098|1390|755|Porsche
+Radical SR3 SL '13|N|MR|239|775|547|Radical
+RE Amemiya FD3S RX-7|N|FR|366|1240|563|RE Amemiya
+Renault Avantime 3.0 V6 24V '02|N|FF|204|1741|363|Renault
+Renault Captur S Edition TCe 140 '21|N|FF|138|1234|391|Renault
+Renault Espace F1 '95|X|MR|799|1300|754|Renault
+Renault Kangoo 1.4 '01|N|FF|73|1080|300|Renault
+Renault R4 GTL '85|N|FF|33|720|190|Renault
+Renault R5 Turbo '80|N|MR|159|970|400|Renault
+Renault R8 Gordini '66|X|RR|101|850|356|Renault
+Renault Sport Clio R.S. 220 EDC Trophy '15|N|FF|216|1179|466|Renault
+Renault Sport Clio R.S. 220 EDC Trophy '16|N|FF|216|1204|463|Renault
+Renault Sport Clio V6 24V '00|N|MR|229|1335|463|Renault
+Renault Sport Mégane Gr.4|4|FF|350|1100|644|Renault
+Renault Sport Mégane R.S. Trophy '11|N|FF|261|1387|486|Renault
+Renault Sport Mégane R.S. Trophy Safety Car|X|FF|261|1387|483|Renault
+Renault Sport Mégane Trophy '11|4|MR|359|955|650|Renault
+Renault Sport R.S.01 '16|X|MR|542|1144|724|Renault
+Renault Sport R.S.01 GT3 '16|3|MR|534|1220|710|Renault
+Renault Twingo '93|N|FF|54|790|295|Renault
+Roadster Shop Rampage|N|FR|748|1406|660|Roadster Shop
+RUF CTR3 '07|N|MR|690|1400|654|RUF
+RUF RGT 4.2 '16|N|RR|517|1400|641|RUF
+Shelby Cobra 427 '66|N|FR|484|1068|572|Shelby
+Shelby Cobra Daytona Coupe '64|X|FR|384|1043|551|Shelby
+Shelby G.T.350 '65|N|FR|304|1270|452|Shelby
+Škoda Vision Gran Turismo|X|4WD|1071|1300|852|Škoda
+Subaru BRZ Drift Car '17|X|FR|1037|1433|617|Subaru
+Subaru BRZ GT300 '21|3|FR|478|1150|714|Subaru
+Subaru BRZ S '15|N|FR|197|1230|449|Subaru
+Subaru BRZ S '21|N|FR|231|1270|483|Subaru
+Subaru BRZ STI Sport '18|N|FR|203|1250|467|Subaru
+Subaru Impreza 22B-STi Version '98|N|4WD|289|1270|501|Subaru
+Subaru Impreza Coupe WRX Type R STi Version VI '99|N|4WD|276|1260|473|Subaru
+Subaru Impreza Rally Car '98|B|4WD|299|1230|580|Subaru
+Subaru Impreza Sedan WRX STi '04|N|4WD|286|1460|485|Subaru
+SUBARU VIZIV GT Vision Gran Turismo|X|4WD|630|1380|700|Subaru
+Subaru WRX Gr.3|3|FR|591|1280|718|Subaru
+Subaru WRX Gr.4|4|4WD|377|1320|636|Subaru
+Subaru WRX Gr.B Rally Car|B|4WD|521|1280|642|Subaru
+Subaru WRX Gr.B Road Car|N|4WD|473|1425|577|Subaru
+Subaru WRX STI Isle of Man Time Attack Car '16|X|4WD|578|1140|704|Subaru
+Subaru WRX STI Type S '14|N|4WD|302|1490|489|Subaru
+Dallara SF19 Super Formula / Honda '19|X|MR|639|660|960|Super Formula
+Dallara SF19 Super Formula / Toyota '19|X|MR|639|660|960|Super Formula
+Dallara SF23 Super Formula / Honda '23|X|MR|625|670|962|Super Formula
+Dallara SF23 Super Formula / Toyota '23|X|MR|625|670|962|Super Formula
+Suzuki Cappuccino (EA11R) '91|N|FR|62|700|320|Suzuki
+Suzuki Carry KC '12|N|FR|47|710|234|Suzuki
+Suzuki Jimny Sierra JC '18|N|4WD|100|1070|318|Suzuki
+Suzuki Jimny XC '18|N|4WD|63|1030|261|Suzuki
+Suzuki Swift Sport '07|N|FF|123|1060|410|Suzuki
+Suzuki Swift Sport '17|N|FF|137|970|439|Suzuki
+Suzuki Swift Sport KATANA Edition Gr.4|4|FF|345|900|665|Suzuki
+Suzuki V6 Escudo Pikes Peak Special '98|X|4WD|981|800|780|Suzuki
+SUZUKI Vision Gran Turismo|X|4WD|426|970|651|Suzuki
+SUZUKI Vision Gran Turismo (Gr.3 Version)|3|FR|577|1220|711|Suzuki
+Tesla Model 3 Performance '23|X|4WD|531|1836|534|Tesla
+Tesla Model S Signature Performance '12|X|RR|410|2018|484|Tesla
+Toyota 2000GT '67|N|FR|153|1120|393|Toyota
+TOYOTA 86 Gr.4|4|FR|358|1200|639|Toyota
+TOYOTA 86 Gr.B Rally Car|B|4WD|516|1180|665|Toyota
+Toyota 86 GRMN '16|N|FR|214|1220|474|Toyota
+TOYOTA 86 GT '15|N|FR|197|1230|451|Toyota
+TOYOTA 86 GT"Limited" '16|N|FR|203|1240|453|Toyota
+Toyota Alphard Executive Lounge '18|N|4WD|296|2210|363|Toyota
+Toyota Ambulance Himedic '21|X|4WD|157|2860|210|Toyota
+Toyota Aqua S '11|N|FF|109|1080|360|Toyota
+Toyota C-HR S '18|N|FF|136|1440|348|Toyota
+Toyota Celica GT-FOUR (ST205) '94|N|4WD|250|1380|455|Toyota
+Toyota Celica GT-FOUR Rally Car (ST205) '95|B|4WD|298|1200|588|Toyota
+Toyota Chaser Tourer V '97|N|FR|276|1470|475|Toyota
+Toyota Corolla Levin 3door 1600GT APEX (AE86) '83|N|FR|127|940|381|Toyota
+Toyota Crown Athlete G '13|N|FR|309|1650|472|Toyota
+Toyota Crown Athlete G Safety Car|X|FR|309|1650|466|Toyota
+Toyota FT-1|X|FR|0|0|568|Toyota
+Toyota FT-1 Vision Gran Turismo|X|FR|0|0|758|Toyota
+Toyota FT-1 Vision Gran Turismo (Gr.3)|3|FR|544|1280|710|Toyota
+Toyota GR Corolla MORIZO Edition '22|N|4WD|299|1445|498|Toyota
+Toyota GR Supra Race Car '19|4|FR|394|1380|637|Toyota
+Toyota GR Supra Racing Concept '18|3|FR|591|1243|731|Toyota
+Toyota GR Supra RZ '19|N|FR|335|1520|525|Toyota
+Toyota GR Supra RZ '20|N|FR|382|1530|533|Toyota
+Toyota GR Yaris 1st Edition RZ "High performance" '20|N|4WD|268|1290|502|Toyota
+TOYOTA GR010 HYBRID '21|1|4WD|670|1040|852|Toyota
+Toyota GR86 RZ '21|N|FR|231|1270|483|Toyota
+Toyota GT-One (TS020) '99|2|MR|764|900|845|Toyota
+Toyota Hiace Van DX '16|N|FR|134|1680|244|Toyota
+Toyota Land Cruiser FJ40V '74|N|4WD|128|1610|293|Toyota
+Toyota Mark II Tourer V '97|N|FR|276|1470|475|Toyota
+Toyota MR2 GT-S '97|N|MR|241|1270|478|Toyota
+Toyota Prius G '09|N|FF|146|1350|370|Toyota
+Toyota RAV4 Adventure '20|N|4WD|168|1630|373|Toyota
+TOYOTA S-FR '15|N|FR|133|1050|430|Toyota
+TOYOTA S-FR Racing Concept '16|N|FR|349|1150|557|Toyota
+Toyota Sports 800 '65|N|FR|43|580|256|Toyota
+Toyota Sprinter Trueno 3door 1600GT APEX (AE86) '83|N|FR|127|940|381|Toyota
+Toyota Supra 3.0GT Turbo A '88|N|FR|266|1530|455|Toyota
+Toyota Supra GT500 '97|3|FR|492|1150|696|Toyota
+Toyota Supra RZ '97|N|FR|325|1510|507|Toyota
+Toyota Trueno 3door 1600GT APEX (AE86 Shuichi Shigeno Version)|N|FR|207|825|510|Toyota
+Toyota TS030 Hybrid '12|1|MR|529|900|887|Toyota
+Toyota TS050 - Hybrid '16|1|4WD|493|875|879|Toyota
+Toyota Tundra TRD Pro '19|N|4WD|379|2555|384|Toyota
+TVR Tuscan Speed 6 '00|N|FR|360|1100|556|TVR
+Volkswagen 1200 '66|N|RR|33|780|170|Volkswagen
+Volkswagen Beetle Gr.3|3|FR|591|1200|737|Volkswagen
+Volkswagen Golf I GTI '83|N|FF|110|890|372|Volkswagen
+Volkswagen Golf VII GTI '14|N|FF|216|1390|454|Volkswagen
+Volkswagen GTI Roadster Vision Gran Turismo|X|4WD|551|1200|694|Volkswagen
+Volkswagen GTI Supersport Vision Gran Turismo|X|4WD|551|1200|695|Volkswagen
+Volkswagen GTI Vision Gran Turismo (Gr.3)|3|MR|551|1260|690|Volkswagen
+Volkswagen ID.R '19|X|4WD|670|1030|849|Volkswagen
+Volkswagen Polo GTI '14|N|FF|189|1272|439|Volkswagen
+Volkswagen Sambabus Typ 2 (T1) '62|N|RR|33|1095|116|Volkswagen
+Volkswagen Scirocco Gr.4|4|FF|358|1050|657|Volkswagen
+Volkswagen Scirocco R '10|N|FF|252|1410|488|Volkswagen
+Volvo 240 SE Estate '93|N|FR|109|1324|303|Volvo
+Volvo V40 T5 R-Design '13|N|FF|210|1540|432|Volvo
+Wicked Fabrication GT 51|N|FR|372|1338|522|Wicked Fabrication
+Xiaomi SU7 Ultra '25|X|4WD|1526|2360|681|Xiaomi
+Yangwang U9 '24|X|4WD|1286|2380|675|Yangwang
+IsoRivolta Zagato Vision Gran Turismo|X|FR|559|1150|658|Zagato`;
 const n=t=>+String(t||'0').replace(/,/g,'');
 const parse=t=>t.split('\n').map(l=>l.split('\t')).filter(r=>r.length>=7&&/PP/.test(r[3])).map(r=>[r[0].trim(),r[4].trim(),n((r[5].match(/([\d,]+)\s*BHP/)||[])[1]),n((r[6].match(/([\d,]+)\s*kg/)||[])[1]),r[1].trim(),r[2].trim(),Math.round(parseFloat(r[3].replace(/[^\d.]/g,'')))]);
 let C=[],mkr='';RAW.split('\n').forEach(l=>{if(l[0]=='#')mkr=l.slice(1);else if(l.trim()){const p=l.split('|');C.push([p[0],p[2],+p[3],+p[4],(p[6]||mkr).trim(),'Gr.'+p[1],+p[5]])}});
