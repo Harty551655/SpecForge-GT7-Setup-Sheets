@@ -81,6 +81,13 @@ const LOGO_DATA='data:image/webp;base64,UklGRh5SAABXRUJQVlA4WAoAAAAQAAAAtwEATAEA
 <div class="btns"><button class="s" id="aadd">Add car</button></div>
 <label>Or bulk import (paste your full table, tab-separated)</label><textarea id="imp"></textarea>
 <div class="btns"><button class="s" id="impb">Import all</button></div><p class="info" id="impm"></p></details>
+<details id="swp"><summary>Engine swap (tune for a swapped engine)</summary>
+<label class="chk"><input type="checkbox" id="swon">I have swapped the engine</label>
+<div class="g2"><div><label>Engine type</label><select id="en_t"></select></div><div><label>Aspiration</label><select id="en_a"></select></div></div>
+<label>Engine</label><select id="en"></select><div class="info" id="en_i"></div><input id="sw_nm" type="hidden">
+<div class="g2"><div><label>Power after swap (hp)</label><input type="number" id="sw_hp"></div><div><label>Weight after swap (kg)</label><input type="number" id="sw_kg"></div></div>
+<div class="g2"><div><label>Drivetrain after swap</label><select id="sw_dr"><option>Same as car</option><option>FR</option><option>MR</option><option>RR</option><option>FF</option><option>4WD</option></select></div><div><label>PP after swap</label><input type="number" id="sw_pp"></div></div>
+<p class="info">Use the numbers the game shows for your car after the swap. Leave a box empty to keep the car's own value.</p></details>
 <details><summary>Other installed parts (engine, drivetrain, weight)</summary><div id="p2"></div></details>
 <h2>Track</h2>
 <div class="g2"><div><label>Track</label><select id="track"></select></div><div><label>Layout</label><select id="layout"></select></div></div>
@@ -753,6 +760,72 @@ $('gonly').onchange=list;
 $('glist').onclick=e=>{const d=e.target.dataset||{},k=d.k;if(!k)return;if(d.g=='del'){G=G.filter(z=>z!=k);saveG();drawG();if($('gonly').checked)list()}else if(d.g=='use'){$('mk').value='';$('cat').value='';list();const ix=C.findIndex(x=>key(x)==k);if(ix>=0){$('car').value=ix;carInfo()}}};
 $('gcopy').onclick=()=>{const j=JSON.stringify(G);$('gcode').value=j;try{navigator.clipboard.writeText(j)}catch(e){}};
 $('gload').onclick=()=>{try{const g=JSON.parse($('gcode').value);if(!Array.isArray(g))throw 0;g.forEach(k=>{if(typeof k=='string'&&!G.includes(k))G.push(k)});saveG();drawG();list()}catch(e){$('gcode').value='That is not a valid garage code.'}};
+const ENG=`B18C-Integra-'98|Inline-4|1797|NA|198|19
+B58-GR-Supra-'20|Inline-6|2998|TC|382|51
+BYH-R8|V8|4163|NA|414|43.8
+Coyote-5.0L-Mustang|V8|4951|NA|434|55.3
+CTR38-CTR3|Flat-6|3746|TC|690|90.8
+Demon-Challenger|V8|6166|SC|840|106.5
+DKH-911|Flat-6|3745|TC|641|81.6
+EJ20-Impreza-Rally|Flat-4|1994|TC|299|48
+Evo-Final-Gr.B|Inline-4||TC|521|63.2
+F136F-458|V8|4499|NA|563|55.1
+F140B-Enzo|V12|5998|NA|658|67
+GTI-VGT-Gr.3|VR6||TC|551|67.8
+H25A-Escudo|V6|2493|TC|981|95
+Hellcat-Charger|V8|6161|SC|707|89.9
+HR-414E-NSX|Inline-4|1995|TC|603|62.5
+K14C-Swift|Inline-4|1371|TC|137|23.5
+K20C1-Civic-'20|Inline-4|1995|TC|315|40.7
+K24A-Civic|Inline-4||TC|389|44.8
+L4-Focus-Gr.B|Inline-4|1999|TC|538|59.1
+L539-Aventador-SV|V12|6498|NA|739|70.4
+LS7-BRZ|V8|7816|TC|1037|121
+LS7-Rampage|V8|6997|NA|748|96.7
+LS9-Corvette|V8|6162|SC|639|83.5
+LT1-Corvette|V8|6162|NA|453|63.5
+LT4-Camaro|V8|6162|SC|649|88.6
+LT5-Corvette-C7|V8|6162|SC|754|98.9
+LZ20B-Skyline|Inline-4|2083|TC|561|55
+M64/03-911|Flat-6|3600|NA|255|33.2
+M97/80-911|Flat-6|4000|NA|509|49.8
+M158-AMG-Huayra|V12|5980|TC|730|112.2
+M159-AMG-GT3-'20|V8|6208|NA|614|73.4
+MDYA-911|Flat-6|3996|NA|517|47.5
+P65B44-Z4|V8|4361|NA|522|52.5
+R5-20vT-Quattro-Pikes|Inline-5|2110|TC|588|60.1
+R06A-Jimny|Inline-3|658|TC|63|9.8
+R26B-787B|Rotor-4|654x4|NA|690|62
+RB26DETT-GT-R-R34|Inline-6|2568|TC|336|47.8
+RB26DETT-Mine's|Inline-6|2627|TC|621|64
+RS4-Espace|V10|3500|NA|799|71.9
+S70/3-F1GTR-'97|V12||NA|602|72.5
+SE75E-2&4|V4|999|NA|211|12
+SR20DET-Silvia-S15|Inline-4|1998|TC|246|27.9
+V8-F3500-B|V8|3494|NA|719|41.5
+V8-Ford-GT-LM-Test|V8|5409|SC|590|73.7
+V8-Suzuki-VGT-Gr.3|V8|2680|TC|577|50
+V12-F3500-A|V12|3496|NA|773|41.4
+V12-XJR-9|V12|6995|NA|749|79.6
+VK45DE-GT-R|V8|4494|NA|527|56.1
+Voodoo-5.2L-GT350R|V8|5163|NA|525|59.4
+VR38DETT-GT-R-NISMO|V6|3799|TC|591|66.5
+VRH35Z-R92CP|V8|3496|TC|788|80
+Windsor-351-Maverick|V8|6997|TC|1199|124.4
+1LR-GUE-LFA|V10|4805|NA|552|48.8
+2JZ-GTE-Supra|Inline-6|2997|TC|325|54.2
+3S-GTE-MR2|Inline-4|1998|TC|241|31
+3UZ-FE-SC430|V8|4480|NA|516|59.6
+8.0-WR16-64v4T-Chiron|W16|7993|TC|1479|165.5
+13B-REW-RX-7|Rotor-2|654x2|TC|292|33.9
+690T-Giulia|V6|2891|TC|532|61.2
+959.50-959|Flat-6|2850|TC|443|51`.split('\n').map(l=>{const p=l.split('|');return{n:p[0],t:p[1],cc:p[2],a:p[3],hp:+p[4],tq:+p[5]}});
+const ASP={NA:'Naturally aspirated',TC:'Turbocharged',SC:'Supercharged'};
+const enPick=()=>{const i=$('en').value;if(i===''){$('sw_nm').value='';$('en_i').textContent='';return}const e=ENG[+i];$('sw_nm').value=e.n;$('sw_hp').value=e.hp;$('swon').checked=true;$('en_i').textContent=e.t+' · '+(e.cc?e.cc+' cc':'size not listed')+' · '+(ASP[e.a]||e.a)+' · '+e.hp+' hp · '+e.tq+' kgfm'};
+const enList=()=>{const t=$('en_t').value,a=$('en_a').value;$('en').innerHTML='<option value="">Custom / not listed</option>'+ENG.map((e,i)=>[e,i]).filter(([e])=>(!t||e.t==t)&&(!a||e.a==a)).map(([e,i])=>`<option value="${i}">${esc(e.n)}</option>`).join('');enPick()};
+$('en_t').innerHTML='<option value="">All types</option>'+[...new Set(ENG.map(e=>e.t))].sort().map(t=>`<option>${t}</option>`).join('');
+$('en_a').innerHTML='<option value="">All aspirations</option><option value="NA">Naturally aspirated (NA)</option><option value="TC">Turbocharged (TC)</option><option value="SC">Supercharged (SC)</option>';
+$('en_t').onchange=enList;$('en_a').onchange=enList;$('en').onchange=enPick;enList();
 build();drawG();
 const txtOf=i=>$(i).options[$(i).selectedIndex].text,cl=(n,a,b)=>Math.min(b,Math.max(a,n)),f1=n=>(Math.round(n*10)/10).toFixed(1);
 // problem keywords -> adjustments
@@ -770,11 +843,13 @@ const AERO_NOTE='<p class="foot" style="margin:8px 0"><b>Working out the % on yo
 const wireCalc=(pF,pR)=>{const f=(a,b,p,o)=>{const lo=parseFloat($(a).value),hi=parseFloat($(b).value);$(o).textContent=isFinite(lo)&&isFinite(hi)&&hi>lo?String(Math.round((lo+(hi-lo)*(p+50)/100)*10)/10):'enter MIN and MAX'},go=()=>{f('fMin','fMax',pF,'fOut');f('rMin','rMax',pR,'rOut')};['fMin','fMax','rMin','rMax'].forEach(i=>$(i).oninput=go)};
 function gen(){
 const x=v('car')==='x',cr=x?['Custom car',v('cd'),+v('chp')||400,+v('ckg')||1400]:C[+v('car')];
-const name=cr[0],d=['FR','MR','RR','FF','4WD'].includes(cr[1])?cr[1]:'4WD',hp0=cr[2],wr=+(document.querySelector('#o14')?$('o14').selectedIndex:0),kg=Math.round((cr[3]||1400)*(1-.04*wr));
+const sw=c('swon'),DR=['FR','MR','RR','FF','4WD'],name=cr[0],d=sw&&DR.includes(v('sw_dr'))?v('sw_dr'):(DR.includes(cr[1])?cr[1]:'4WD'),hp0=sw&&+v('sw_hp')>0?+v('sw_hp'):cr[2],wr=+(document.querySelector('#o14')?$('o14').selectedIndex:0),kg=Math.round((sw&&+v('sw_kg')>0?+v('sw_kg'):(cr[3]||1400))*(1-.04*wr)),bpp=sw&&+v('sw_pp')>0?+v('sw_pp'):cr[6];
 const L0=T[v('track')][+v('layout')],ty=L0[1],spd=L0[2],tyre=txtOf('tyre'),race=tyre.startsWith('Racing')||false,aero=c('aero');
 const susp=+v('susp')===3,lsd=+v('lsd')===4,tr=+v('trans')===4,ecu=+v('ecu')===2;
 const a={af:0,ar:0,tf:0,tr:0,cf:0,lA:0,lB:0,lI:0,bb:0,hz:0,cmp:0,rh:0,df:0,dr:0},notes=[],prob=v('prob');
 R.forEach(r=>{if(r[0].test(prob)){notes.push(r[1]);r[2](a)}});
+const pw=hp0&&kg?hp0/kg*1000:0,swn=[];
+if(sw){if(pw>450){a.lA+=3;swn.push('High power-to-weight ('+Math.round(pw)+' hp per tonne): more LSD acceleration lock.')}if(pw>650){a.lA+=3;a.lI+=2;swn.push('Very high power: even more LSD lock and a higher initial torque.')}swn.push('Engine swaps change the weight balance. If the car feels nose-heavy or tail-heavy, describe it in the problems box.')}
 const rows=(t,r)=>({t,r});const S=[];
 // suspension
 const rhB={fast:[0,5],mixed:[5,10],tech:[10,15]}[ty],rh=n=>n+a.rh>0?'Lowest +'+(n+a.rh)+' mm':'Lowest';
@@ -800,8 +875,9 @@ const bp=cl({FF:2,FR:1,MR:0,RR:-1,'4WD':1}[d]+(ty=='tech'?-1:0)+a.bb,-5,5),bpos=
 S.push(['Brakes, weight and power',[c('bbc')?['Brake balance',(bp>0?'+':'')+bp,'+ = front bias']:['Brake balance','Locked','Needs Brake Balance Controller'],c('ballast')?['Ballast position',bpos,'Use to fix balance or meet PP']:['Ballast','Not installed',''],ecu?['ECU output','100% (reduce only for PP)','']:['ECU output','Locked','Needs Fully Customizable ECU'],c('restr')?['Power restrictor','100% (reduce only for PP)','']:['Power restrictor','Not installed','']]]);
 const ins=[P1[0]&&'Tyres: '+tyre,'Suspension: '+txtOf('susp'),'LSD: '+txtOf('lsd'),'Transmission: '+txtOf('trans'),'ECU: '+txtOf('ecu')].concat(P2.map((p,i)=>$('o'+i).value?p[0]+': '+$('o'+i).value:null).filter(Boolean),[aero&&'Adjustable Downforce',c('bbc')&&'Brake Balance Controller',c('ballast')&&'Ballast',c('restr')&&'Power Restrictor'].filter(Boolean));
 const ppl=+v('ppl');
-let top=`<div class="sh"><div>${TH.sheetLogo?`<img src="${TH.sheetLogo}" style="height:64px;display:block;margin-bottom:8px" alt="">`:`<div class="logo" style="margin-bottom:6px">LOGO</div>`}<b>${name}</b><br><small>${cr[5]||'Custom'} · ${d} · ${hp0||'?'} hp (stock) · ${W(kg)}${cr[6]?' · base PP '+cr[6]:''}</small></div><div style="text-align:right"><b>${v('track')}</b><br><small>${L0[0]} · ${ppl?'Max PP '+ppl:'No PP limit'}</small>${TH.team?'<br><small>'+esc(TH.team)+'</small>':''}</div></div>`;
-if(ppl)top+=`<div class="warn"><b>PP limit ${ppl}.</b>${cr[6]?(cr[6]>ppl?' Stock PP is '+cr[6]+', already '+(cr[6]-ppl)+' over, so cut power or add weight.':' Stock PP is '+cr[6]+', leaving about '+(ppl-cr[6])+' PP to spend.'):''} Check your PP in the tuning menu; it updates live. If you are over: ${c('restr')||ecu?'cut power with the '+(c('restr')?'power restrictor':'ECU output')+' (keeps cornering, loses straight speed)':'fit a power restrictor or ECU to cut power (keeps cornering, loses straight speed)'}, or ${c('ballast')?'add ballast':'install ballast'} (keeps power, hurts everything), or drop a tyre compound (big PP saving, big grip loss). If you are under, add power or step up a tyre.</div>`;
+let top=`<div class="sh"><div>${TH.sheetLogo?`<img src="${TH.sheetLogo}" style="height:64px;display:block;margin-bottom:8px" alt="">`:`<div class="logo" style="margin-bottom:6px">LOGO</div>`}<b>${name}</b>${sw&&v('sw_nm').trim()?'<br><small>Engine swap: '+esc(v('sw_nm').trim())+(e=>e?' ('+e.t+', '+(ASP[e.a]||e.a)+', '+e.tq+' kgfm)':'')(ENG.find(e=>e.n==v('sw_nm')))+'</small>':''}<br><small>${cr[5]||'Custom'} · ${d} · ${hp0||'?'} hp (${sw?'swap':'stock'}) · ${W(kg)}${bpp?' · '+(sw?'PP':'base PP')+' '+bpp:''}</small></div><div style="text-align:right"><b>${v('track')}</b><br><small>${L0[0]} · ${ppl?'Max PP '+ppl:'No PP limit'}</small>${TH.team?'<br><small>'+esc(TH.team)+'</small>':''}</div></div>`;
+if(ppl)top+=`<div class="warn"><b>PP limit ${ppl}.</b>${bpp?(bpp>ppl?' '+(sw?'Your swapped PP':'Stock PP')+' is '+bpp+', already '+(bpp-ppl)+' over, so cut power or add weight.':' '+(sw?'Your swapped PP':'Stock PP')+' is '+bpp+', leaving about '+(ppl-bpp)+' PP to spend.'):''} Check your PP in the tuning menu; it updates live. If you are over: ${c('restr')||ecu?'cut power with the '+(c('restr')?'power restrictor':'ECU output')+' (keeps cornering, loses straight speed)':'fit a power restrictor or ECU to cut power (keeps cornering, loses straight speed)'}, or ${c('ballast')?'add ballast':'install ballast'} (keeps power, hurts everything), or drop a tyre compound (big PP saving, big grip loss). If you are under, add power or step up a tyre.</div>`;
+if(sw)top+=`<div class="ok"><b>Tuned for your engine swap: ${hp0||'?'} hp, ${W(kg)}, ${d}.</b> ${swn.map(esc).join(' ')}</div>`;
 if(notes.length)top+=`<h3>Adjusted for your problems</h3><ul>${notes.map(n=>`<li>${n}</li>`).join('')}</ul>`;
 else if(prob.trim())top+=`<div class="ok">No keywords recognised in your notes. Try words like understeer, oversteer, wheelspin, braking, bumpy or slow on straights.</div>`;
 let h=top,t=`${name} | ${d} | ${kg}kg\n${v('track')} - ${L0[0]} | ${ppl?'Max PP '+ppl:'No PP limit'}\n`+(notes.length?'\nProblems addressed:\n'+notes.map(n=>' - '+n).join('\n')+'\n':'');
