@@ -14,9 +14,12 @@ Live app: [Open SpecForge GT7](https://harty551655.github.io/SpecForge-GT7-Setup
 - **Engine swaps:** open "Engine swap", choose the engine from the list of 60 game engines (filter by type, such as V8 or Flat-6, and by aspiration: naturally aspirated, turbocharged or supercharged), or pick "Custom / not listed". Choosing an engine fills in its power. Then enter the weight, drivetrain and PP the game shows after your swap. The tune, the hp-per-tonne figure and the PP limit helper then use your swapped numbers instead of the car's standard ones. Higher-power swaps get more LSD acceleration lock, and the sheet reminds you that swaps change weight balance, so use the problems box if the car feels nose- or tail-heavy.
 - **My garage:** add the cars you own to a personal list, see how many you have, remove them, and tick "Only show cars in my garage" to shorten the car dropdown. It is saved in your own browser, and a copy/paste code moves it to another device.
 - **Parts list:** tick what you have installed (suspension, LSD, transmission, ECU, adjustable downforce, brake balance controller, ballast, power restrictor, tyres, plus engine and drivetrain upgrades). Settings your car cannot adjust show as locked, with the part you would need.
+- **General tune:** the first option in the Track list is "General tune (any track)". It gives balanced all-round settings for the car with no track needed, which is a good starting point for newer players or when you just want one tune for the car.
 - **Track and layout:** pick the track, then the layout. Each layout is tagged fast, mixed or technical, which drives the downforce, gearing, ride height and toe values.
 - **PP limit:** enter a max PP and the sheet shows how much PP the car has left to spend, or how far over the limit it already is, with ways to get under it.
+- **Test-drive feedback buttons:** under the problems box, tap what you noticed after driving (understeer, oversteer, wheelspin, brake lock-ups, bouncy over kerbs and so on), then generate again. The sheet lists what it changed and why.
 - **Problem notes:** type things like "understeers in slow corners", "rear locks under braking" or "bouncy over kerbs" and the settings adjust to suit. The sheet lists what it changed and why.
+- **Share and test a tune:** under the sheet, **Copy tune link** gives a link that holds your exact setup (car, parts, track, notes, your name and a message). A friend or tester opens it, drives the car, taps what they noticed, presses Generate and sends back their own link with the adjusted tune. **Copy tune request post** writes a ready-made post (car, parts, track, problems and the link) you can paste into Discord, Reddit or anywhere. Nothing is stored on a server: everything is inside the link.
 - **Setup sheet:** suspension, aerodynamics, differential, transmission, brakes, ballast and power. Copy it as text or print it or save it as a PDF.
 - **Aero scale:** downforce is shown from -50% (slider minimum) to +50% (slider maximum), with 0% in the middle. A built-in calculator turns those percentages into the actual numbers once you enter each slider's MIN and MAX.
 - **Differentials:** choose whether your customizable LSD is on the front, the rear, or both. The sheet shows separate front and rear settings when needed.
@@ -68,7 +71,8 @@ Everything you may want to change lives near the top of the `<script>` section i
    | `fs`, `r`, `mw` | Text size, corner roundness and page width in pixels |
    | `logo`, `sheetLogo` | Header logo and sheet logo. Use `'logo.png'` for a file next to `index.html`, or a `data:image/...` string |
    | `watermark`, `wmOpacity` | Faint logo behind the app and the sheet (`true`/`false`, opacity 0.02 to 0.15) |
-   | `team`, `note` | A name and a footer note printed on every sheet |
+   | `discord` | Your community invite link (for example `'https://discord.gg/abc123'`). Adds a "Join the community" link and opens your server after the request post is copied. Leave `''` to hide it |
+| `team`, `note` | A name and a footer note printed on every sheet |
    | `wu`, `su` | Weight unit (`kg` or `lb`) and speed unit (`km/h` or `mph`) |
    | `hints` | Show or hide the grey hints column on the sheet |
 
@@ -121,6 +125,20 @@ Upload a new `index.html` with the same name (**Add file**, then **Upload files*
 - **Claude-only extras:** if the app is opened on its original claude.ai link, editors see an "Admin: add cars for everyone" box that shares cars with all viewers live. That box does not appear on GitHub Pages. On GitHub Pages, cars are added by editing the `RAW` block and uploading the file again.
 - **Printing:** use **Print / Save PDF** on the generated sheet. The page, buttons and footer are hidden when printing, and the logo watermark prints faintly behind the sheet.
 - **Accuracy:** car stats come from the game's published figures at the time of entry and may change with game updates. Always check the values in the tuning menu in game.
+
+---
+
+## Setting up the tuning community (Discord, free)
+
+1. Create a Discord server: click **+** (Add a Server), **Create My Own**, **For a club or community**, name it (for example "SpecForge GT7 Tuning").
+2. Open **Server Settings**, then **Enable Community**, and follow the steps. This unlocks forum channels.
+3. Create a channel: **Create Channel**, choose **Forum**, name it `tune-requests`. In its settings add tags such as `Needs tester`, `Tested` and `Solved`.
+4. Add a post in the channel's guidelines area explaining how it works: post your tune request, testers reply with an adjusted link.
+5. Turn on **AutoMod** (Server Settings, Safety Setup / AutoMod) to block spam and links from new accounts.
+6. Click **Invite People**, then **Edit invite link**, set **Expire After** to **Never** and **Max number of uses** to **No limit**, and copy the link.
+7. In `index.html`, search for `discord:''` and paste the link between the quotes. Save and upload the file to GitHub.
+
+Menu names in Discord change from time to time, so look for the closest match if a label is slightly different.
 
 ---
 
