@@ -6,6 +6,8 @@ Unofficial fan project. Not affiliated with, endorsed by, or sponsored by Polyph
 
 Live app: [Open SpecForge GT7](https://harty551655.github.io/SpecForge-GT7-Setup-Sheets/)
 
+Community: [Join the SpecForge GT7 Discord](https://discord.gg/VXauErnjw) to get your tune tested, test other people's tunes and share setups.
+
 ---
 
 ## What it does
@@ -136,7 +138,7 @@ Upload a new `index.html` with the same name (**Add file**, then **Upload files*
 4. Add a post in the channel's guidelines area explaining how it works: post your tune request, testers reply with an adjusted link.
 5. Turn on **AutoMod** (Server Settings, Safety Setup / AutoMod) to block spam and links from new accounts.
 6. Click **Invite People**, then **Edit invite link**, set **Expire After** to **Never** and **Max number of uses** to **No limit**, and copy the link.
-7. In `index.html`, search for `discord:''` and paste the link between the quotes. Save and upload the file to GitHub.
+7. In `index.html`, search for `discord:` and paste the link between the quotes. The current link is already set to https://discord.gg/VXauErnjw. Save and upload the file to GitHub if you ever change it.
 
 Menu names in Discord change from time to time, so look for the closest match if a label is slightly different.
 
